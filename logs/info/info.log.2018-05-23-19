@@ -1,0 +1,48 @@
+2018-05-23 19:47:53,219 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 15118 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-05-23 19:47:53,222 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-05-23 19:47:53,419 [restartedMain] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5844bd5b: startup date [Wed May 23 19:47:53 CST 2018]; root of context hierarchy
+2018-05-23 19:47:56,201 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+2018-05-23 19:47:56,235 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2018-05-23 19:47:56,263 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-05-23 19:47:56,265 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-05-23 19:47:56,285 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/guanhuijun/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-05-23 19:47:56,526 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-05-23 19:47:56,527 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3108 ms
+2018-05-23 19:47:56,742 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2018-05-23 19:47:56,750 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-05-23 19:47:56,751 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-05-23 19:47:56,751 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-05-23 19:47:56,751 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2018-05-23 19:47:56,825 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2018-05-23 19:48:52,470 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 15143 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-05-23 19:48:52,474 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-05-23 19:48:52,616 [restartedMain] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6f69aef: startup date [Wed May 23 19:48:52 CST 2018]; root of context hierarchy
+2018-05-23 19:48:55,150 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+2018-05-23 19:48:55,179 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2018-05-23 19:48:55,199 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-05-23 19:48:55,199 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-05-23 19:48:55,214 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/guanhuijun/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-05-23 19:48:55,440 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-05-23 19:48:55,441 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2825 ms
+2018-05-23 19:48:55,645 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2018-05-23 19:48:55,651 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-05-23 19:48:55,652 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-05-23 19:48:55,652 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-05-23 19:48:55,652 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2018-05-23 19:48:55,738 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2018-05-23 19:49:54,529 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 15171 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-05-23 19:49:54,533 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-05-23 19:49:54,754 [restartedMain] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5844bd5b: startup date [Wed May 23 19:49:54 CST 2018]; root of context hierarchy
+2018-05-23 19:49:57,173 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+2018-05-23 19:49:57,198 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2018-05-23 19:49:57,217 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-05-23 19:49:57,217 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-05-23 19:49:57,235 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/guanhuijun/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-05-23 19:49:57,472 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-05-23 19:49:57,472 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2718 ms
+2018-05-23 19:49:57,660 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2018-05-23 19:49:57,668 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-05-23 19:49:57,669 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-05-23 19:49:57,669 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-05-23 19:49:57,670 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2018-05-23 19:49:57,740 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]

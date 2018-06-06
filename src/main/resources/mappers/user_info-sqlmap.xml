@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.property.manage.common.mappers.UserInfoMapper">
+
+    <resultMap id="userInfo" type="com.property.manage.common.pojo.UserInfo">
+        <result property="id" column="id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="userType" column="user_type"/>
+        <result property="avatarUrl" column="avatar_url"/>
+        <result property="gender" column="gender"/>
+        <result property="openId" column="open_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="city" column="city"/>
+        <result property="province" column="province"/>
+        <result property="country" column="country"/>
+        <result property="language" column="language"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updTime" column="upd_time"/>
+    </resultMap>
+
+    <sql id="table_name">user_info</sql>
+
+    <sql id="base_col">id,nick_name,phone_number,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time</sql>
+
+    <sql id="base_select">
+        SELECT
+        <include refid="base_col"/>
+        FROM
+        <include refid="table_name"/>
+    </sql>
+    <!-- Select SQL -->
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                AND id=#{id}
+            </if>
+            <if test="keys != null">
+                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="nickName != null">
+                AND nick_name=#{nickName}
+            </if>
+            <if test="phoneNumber != null">
+                AND phone_number=#{phoneNumber}
+            </if>
+            <if test="userType != null">
+                AND user_type=#{userType}
+            </if>
+            <if test="avatarUrl != null">
+                AND avatar_url=#{avatarUrl}
+            </if>
+            <if test="gender != null">
+                AND gender=#{gender}
+            </if>
+            <if test="openId != null">
+                AND open_id=#{openId}
+            </if>
+            <if test="sessionKey != null">
+                AND session_key=#{sessionKey}
+            </if>
+            <if test="city != null">
+                AND city=#{city}
+            </if>
+            <if test="province != null">
+                AND province=#{province}
+            </if>
+            <if test="country != null">
+                AND country=#{country}
+            </if>
+            <if test="language != null">
+                AND language=#{language}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order">
+        <if test="orderFields != null">
+            <trim prefix=" ORDER BY ">
+                <foreach collection="orderFields" item="item" separator="," close="" open="">
+                    <if test="item != null and item.fieldName == 'id'.toString()">id</if>
+                    <if test="item != null and item.fieldName == 'nick_name'.toString()">nick_name</if>
+                    <if test="item != null and item.fieldName == 'phone_number'.toString()">phone_number</if>
+                    <if test="item != null and item.fieldName == 'user_type'.toString()">user_type</if>
+                    <if test="item != null and item.fieldName == 'avatar_url'.toString()">avatar_url</if>
+                    <if test="item != null and item.fieldName == 'gender'.toString()">gender</if>
+                    <if test="item != null and item.fieldName == 'open_id'.toString()">open_id</if>
+                    <if test="item != null and item.fieldName == 'session_key'.toString()">session_key</if>
+                    <if test="item != null and item.fieldName == 'city'.toString()">city</if>
+                    <if test="item != null and item.fieldName == 'province'.toString()">province</if>
+                    <if test="item != null and item.fieldName == 'country'.toString()">country</if>
+                    <if test="item != null and item.fieldName == 'language'.toString()">language</if>
+                    <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
+                    <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
+                    <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
+                    <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
+                    <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
+                    <if test="item != null and item.order.key == 'desc'.toString()">desc</if>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test="startRow != null ">LIMIT #{startRow},#{pageSize}</if>
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="getUserInfoByKey" resultMap="userInfo" parameterType="hashMap">
+        <include refid="base_select"/>
+        WHERE id=#{id}
+    </select>
+    <select id="getUserInfoByOpenId" resultMap="userInfo" parameterType="hashMap">
+        <include refid="base_select"/>
+        WHERE open_id = #{openId}
+        LIMIT 0, 1
+    </select>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByKey" parameterType="hashMap">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据主键更新 -->
+    <update id="updateUserInfoByKey" parameterType="com.property.manage.common.pojo.UserInfo">
+        UPDATE
+        <include refid="table_name"/>
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="id != null ">,
+                id = #{id}
+            </if>
+            <if test="nickName != null ">,
+                nick_name = #{nickName}
+            </if>
+            <if test="phoneNumber != null ">,
+                phone_number = #{phoneNumber}
+            </if>
+            <if test="userType != null ">,
+                user_type = #{userType}
+            </if>
+            <if test="avatarUrl != null ">,
+                avatar_url = #{avatarUrl}
+            </if>
+            <if test="gender != null ">,
+                gender = #{gender}
+            </if>
+            <if test="openId != null ">,
+                open_id = #{openId}
+            </if>
+            <if test="sessionKey != null ">,
+                session_key = #{sessionKey}
+            </if>
+            <if test="city != null ">,
+                city = #{city}
+            </if>
+            <if test="province != null ">,
+                province = #{province}
+            </if>
+            <if test="country != null ">,
+                country = #{country}
+            </if>
+            <if test="language != null ">,
+                language = #{language}
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <!-- 分页 -->
+    <select id="getUserInfoListWithPage" parameterType="hashMap" resultMap="userInfo">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+        <include refid="limit"/>
+    </select>
+    <select id="getUserInfoListCount" parameterType="hashMap" resultType="int">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <include refid="where"/>
+    </select>
+    <select id="getUserInfoList" parameterType="hashMap" resultMap="userInfo">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+    </select>
+
+    <insert id="insertUserInfo" parameterType="com.property.manage.common.pojo.UserInfo">
+        INSERT INTO
+        <include refid="table_name"/>
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null ">,
+                id
+            </if>
+            <if test="nickName != null ">,
+                nick_name
+            </if>
+            <if test="phoneNumber != null ">,
+                phone_number
+            </if>
+            <if test="userType != null ">,
+                user_type
+            </if>
+            <if test="avatarUrl != null ">,
+                avatar_url
+            </if>
+            <if test="gender != null ">,
+                gender
+            </if>
+            <if test="openId != null ">,
+                open_id
+            </if>
+            <if test="sessionKey != null ">,
+                session_key
+            </if>
+            <if test="city != null ">,
+                city
+            </if>
+            <if test="province != null ">,
+                province
+            </if>
+            <if test="country != null ">,
+                country
+            </if>
+            <if test="language != null ">,
+                language
+            </if>
+            ,add_time
+            ,upd_time
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null">,
+                #{id}
+            </if>
+            <if test="nickName != null">,
+                #{nickName}
+            </if>
+            <if test="phoneNumber != null">,
+                #{phoneNumber}
+            </if>
+            <if test="userType != null">,
+                #{userType}
+            </if>
+            <if test="avatarUrl != null">,
+                #{avatarUrl}
+            </if>
+            <if test="gender != null">,
+                #{gender}
+            </if>
+            <if test="openId != null">,
+                #{openId}
+            </if>
+            <if test="sessionKey != null">,
+                #{sessionKey}
+            </if>
+            <if test="city != null">,
+                #{city}
+            </if>
+            <if test="province != null">,
+                #{province}
+            </if>
+            <if test="country != null">,
+                #{country}
+            </if>
+            <if test="language != null">,
+                #{language}
+            </if>
+            ,now()
+            ,now()
+        </trim>
+    </insert>
+
+</mapper>

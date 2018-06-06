@@ -1,0 +1,46 @@
+2018-06-03 13:52:02,092 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.lan with PID 3656 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-03 13:52:02,099 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-06-03 13:52:02,265 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@40332031: startup date [Sun Jun 03 13:52:02 CST 2018]; root of context hierarchy
+2018-06-03 13:52:02,446 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-03 13:52:04,101 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-06-03 13:52:47,635 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.lan with PID 3674 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-03 13:52:47,637 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-06-03 13:52:47,784 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1a8836db: startup date [Sun Jun 03 13:52:47 CST 2018]; root of context hierarchy
+2018-06-03 13:52:47,936 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-03 13:52:49,801 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-06-03 13:54:59,232 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.lan with PID 3716 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-03 13:54:59,257 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-06-03 13:54:59,410 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@4709eb46: startup date [Sun Jun 03 13:54:59 CST 2018]; root of context hierarchy
+2018-06-03 13:54:59,558 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-03 13:55:01,510 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-06-03 13:56:18,586 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.lan with PID 3743 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-03 13:56:18,587 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: local
+2018-06-03 13:56:18,759 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@367562d9: startup date [Sun Jun 03 13:56:18 CST 2018]; root of context hierarchy
+2018-06-03 13:56:19,254 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-03 13:56:21,294 [restartedMain] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8081 (http)
+2018-06-03 13:56:21,315 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-06-03 13:56:21,317 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.27
+2018-06-03 13:56:21,415 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-06-03 13:56:21,416 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2657 ms
+2018-06-03 13:56:21,558 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2018-06-03 13:56:21,561 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-06-03 13:56:22,468 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/user/query],methods=[POST]}" onto public com.property.manage.base.model.model.Response com.property.manage.app.controller.UserController.query(java.lang.String)
+2018-06-03 13:56:22,469 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/user/login],methods=[POST]}" onto public com.property.manage.base.model.model.Response com.property.manage.app.controller.UserController.login(javax.servlet.http.HttpServletRequest,com.property.manage.app.model.po.UserLoginParams) throws com.property.manage.base.model.exception.ParameterException
+2018-06-03 13:56:22,477 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-06-03 13:56:22,478 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-06-03 13:56:22,671 [restartedMain] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@367562d9: startup date [Sun Jun 03 13:56:18 CST 2018]; root of context hierarchy
+2018-06-03 13:56:23,326 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2018-06-03 13:56:23,581 [restartedMain] INFO  o.s.j.e.a.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2018-06-03 13:56:23,583 [restartedMain] INFO  o.s.j.e.a.AnnotationMBeanExporter - Bean with name 'getDataSource' has been autodetected for JMX exposure
+2018-06-03 13:56:23,589 [restartedMain] INFO  o.s.j.e.a.AnnotationMBeanExporter - Located MBean 'getDataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=getDataSource,type=DruidDataSource]
+2018-06-03 13:56:23,658 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2018-06-03 13:56:23,696 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2018-06-03 13:56:23,745 [restartedMain] INFO  o.a.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+2018-06-03 13:56:23,802 [restartedMain] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8081 (http)
+2018-06-03 13:56:23,814 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Started PropertyManageApplication in 6.087 seconds (JVM running for 6.682)

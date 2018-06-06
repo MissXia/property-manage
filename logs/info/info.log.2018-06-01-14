@@ -1,0 +1,21 @@
+2018-06-01 14:08:36,610 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 30525 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-01 14:08:36,614 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: dev
+2018-06-01 14:08:36,746 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5c04e49f: startup date [Fri Jun 01 14:08:36 CST 2018]; root of context hierarchy
+2018-06-01 14:08:36,956 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-01 14:08:38,900 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-06-01 14:08:57,294 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 30536 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-01 14:08:57,300 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: dev
+2018-06-01 14:08:57,531 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@74dee4ec: startup date [Fri Jun 01 14:08:57 CST 2018]; root of context hierarchy
+2018-06-01 14:08:57,661 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-01 14:08:59,741 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-06-01 14:09:31,310 [restartedMain] INFO  c.p.manage.PropertyManageApplication - Starting PropertyManageApplication on XYY.local with PID 30553 (/Users/guanhuijun/ideaProjects/property-manage/target/classes started by guanhuijun in /Users/guanhuijun/ideaProjects/property-manage)
+2018-06-01 14:09:31,312 [restartedMain] INFO  c.p.manage.PropertyManageApplication - The following profiles are active: dev
+2018-06-01 14:09:31,448 [restartedMain] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c76a451: startup date [Fri Jun 01 14:09:31 CST 2018]; root of context hierarchy
+2018-06-01 14:09:31,535 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2018-06-01 14:09:34,015 [restartedMain] INFO  o.s.b.a.l.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
