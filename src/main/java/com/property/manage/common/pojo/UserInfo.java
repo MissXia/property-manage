@@ -34,6 +34,11 @@ public class UserInfo extends BasePojo {
     private String nickName;
 
     /**
+     * 单元编号
+     */
+    private String unitNumber;
+
+    /**
      * 手机号码
      */
     private String phoneNumber;
@@ -127,6 +132,14 @@ public class UserInfo extends BasePojo {
      */
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 
     /**

@@ -29,6 +29,21 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
+     * 单元编号
+     **/
+    private String unitNumber;
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public UserInfoQuery setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
+        this.params.put("unitNumber", unitNumber);
+        return this;
+    }
+
+    /**
      * 用户昵称
      **/
     private String nickName;
@@ -292,6 +307,16 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
+     * 设置排序按属性：单元编号
+     *
+     * @param isAsc 是否升序，否则为降序
+     */
+    public UserInfoQuery orderbyUnitNumber(boolean isAsc) {
+        orderFields.add(new OrderField("unit_number", isAsc ? SortDirection.ASC : SortDirection.DESC));
+        return this;
+    }
+
+    /**
      * 设置排序按属性：手机号码
      *
      * @param isAsc 是否升序，否则为降序
@@ -416,6 +441,7 @@ public class UserInfoQuery extends BaseQuery {
         super.getFieldSet();
         fieldMap.put("id", "id");
         fieldMap.put("nick_name", "nickName");
+        fieldMap.put("unit_number", "unitNumber");
         fieldMap.put("phone_number", "phoneNumber");
         fieldMap.put("user_type", "userType");
         fieldMap.put("avatar_url", "avatarUrl");

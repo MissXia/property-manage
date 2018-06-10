@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FeeItem">
+
+    <resultMap id="feeItem" type="com.property.manage.common.pojo.FeeItem">
+        <result property="id" column="id"/>
+        <result property="itemName" column="item_name"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updTime" column="upd_time"/>
+    </resultMap>
+
+    <sql id="table_name">fee_item</sql>
+
+    <sql id="base_col">id,item_name,add_time,upd_time</sql>
+
+    <sql id="base_select">
+        SELECT
+        <include refid="base_col"/>
+        FROM
+        <include refid="table_name"/>
+    </sql>
+    <!-- Select SQL -->
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                AND id=#{id}
+            </if>
+            <if test="keys != null">
+                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="itemName != null">
+                AND item_name=#{itemName}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order">
+        <if test="orderFields != null">
+            <trim prefix=" ORDER BY ">
+                <foreach collection="orderFields" item="item" separator="," close="" open="">
+                    <if test="item != null and item.fieldName == 'id'.toString()">id</if>
+                    <if test="item != null and item.fieldName == 'item_name'.toString()">item_name</if>
+                    <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
+                    <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
+                    <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
+                    <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
+                    <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
+                    <if test="item != null and item.order.key == 'desc'.toString()">desc</if>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test="startRow != null ">LIMIT #{startRow},#{pageSize}</if>
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="getFeeItemByKey" resultMap="feeItem" parameterType="hashMap">
+        <include refid="base_select"/>
+        WHERE id=#{id}
+    </select>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByKey" parameterType="hashMap">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE id=#{id}
+    </delete>
+
+
+    <!-- 根据主键更新 -->
+    <update id="updateFeeItemByKey" parameterType="FeeItem">
+        UPDATE
+        <include refid="table_name"/>
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="id != null ">,
+                id = #{id}
+            </if>
+            <if test="itemName != null ">,
+                item_name = #{itemName}
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <!-- 分页 -->
+    <select id="getFeeItemListWithPage" parameterType="hashMap" resultMap="feeItem">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+        <include refid="limit"/>
+    </select>
+    <select id="getFeeItemListCount" parameterType="hashMap" resultType="int">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <include refid="where"/>
+    </select>
+    <select id="getFeeItemList" parameterType="hashMap" resultMap="feeItem">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+    </select>
+
+    <insert id="insertFeeItem" parameterType="FeeItem">
+        INSERT INTO
+        <include refid="table_name"/>
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null ">,
+                id
+            </if>
+            <if test="itemName != null ">,
+                item_name
+            </if>
+            ,add_time
+            ,upd_time
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null">,
+                #{id}
+            </if>
+            <if test="itemName != null">,
+                #{itemName}
+            </if>
+            ,now()
+            ,now()
+        </trim>
+    </insert>
+
+</mapper>

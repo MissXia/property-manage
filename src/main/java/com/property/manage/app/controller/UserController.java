@@ -1,7 +1,6 @@
 package com.property.manage.app.controller;
 
-import com.property.manage.app.model.po.UserListParams;
-import com.property.manage.app.model.po.UserLoginParams;
+import com.property.manage.app.model.po.*;
 import com.property.manage.app.service.UserLoginService;
 import com.property.manage.base.controller.BaseController;
 import com.property.manage.base.model.exception.ParameterException;
@@ -32,6 +31,39 @@ public class UserController extends BaseController {
         UserInfo userInfo = sessionService.getUserInfo();
         // 返回数据
         return Response.success(userLoginService.userInfoResult(userInfo, params));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/phone/number", method = RequestMethod.POST)
+    public Response phoneNumber(@RequestBody UserPhoneParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 审核用户
+        userLoginService.phoneNumber(userInfo, params);
+        // 返回数据
+        return Response.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/unit/number", method = RequestMethod.POST)
+    public Response unitNumber(@RequestBody UserUnitParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 审核用户
+        userLoginService.unitNumber(userInfo, params);
+        // 返回数据
+        return Response.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/verify", method = RequestMethod.POST)
+    public Response verify(@RequestBody UserVerifyTypeParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 审核用户
+        userLoginService.verifyUserType(userInfo, params);
+        // 返回数据
+        return Response.success();
     }
 
     @ResponseBody

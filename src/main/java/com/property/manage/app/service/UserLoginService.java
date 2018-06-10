@@ -1,9 +1,7 @@
 package com.property.manage.app.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.property.manage.app.model.po.UserListParams;
-import com.property.manage.app.model.po.UserLoginParams;
-import com.property.manage.app.model.po.UserOperateParams;
+import com.property.manage.app.model.po.*;
 import com.property.manage.base.constants.MiniConstants;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
@@ -55,6 +53,10 @@ public class UserLoginService {
         query.setUserType(params.getUserType());
         // 昵称
         query.setNickName(params.getNickName());
+        // 单元编号
+        query.setUnitNumber(params.getUnitNumber());
+        // 手机号码
+        query.setPhoneNumber(params.getPhoneNumber());
         // 页码
         query.setPage(params.getPage());
         // 显示条数
@@ -63,9 +65,83 @@ public class UserLoginService {
         return userInfoService.getUserInfoListWithPage(query);
     }
 
-    public void verifyNormal(UserOperateParams params) {
-        //
+    /**
+     * 设定用户手机号码
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void phoneNumber(UserInfo userInfo, UserPhoneParams params) throws ParameterException {
+        // 取得用户信息
+        UserInfo info = userInfoService.getUserInfoByKey(userInfo.getId());
+        // 异常处理
+        if (null == info) {
+            // 中断流程
+            throw new ParameterException("用户信息不存在!");
+        }
+        // 设定手机号码
+        info.setPhoneNumber(params.getPhoneNumber());
+        // 更新时间
+        info.setUpdTime(new Date());
+        // 更新数据
+        userInfoService.updateUserInfoByKey(info);
+    }
+
+    /**
+     * 设定单元编号
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void unitNumber(UserInfo userInfo, UserUnitParams params) throws ParameterException {
+        // 如果权限小于普通员工
+        if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
+            // 中断流程
+            throw new ParameterException("您无权进行此操作!");
+        }
+        // 取得用户信息
         UserInfo info = userInfoService.getUserInfoByKey(params.getUserId());
+        // 异常处理
+        if (null == info) {
+            // 中断流程
+            throw new ParameterException("用户信息不存在!");
+        }
+        // 设定为用户类型
+        info.setUnitNumber(params.getUnitNumber());
+        // 更新时间
+        info.setUpdTime(new Date());
+        // 更新数据
+        userInfoService.updateUserInfoByKey(info);
+    }
+
+    /**
+     * 审核用户类型
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void verifyUserType(UserInfo userInfo, UserVerifyTypeParams params) throws ParameterException {
+        // 如果权限小于普通员工
+        if (userInfo.getUserType() <= params.getUserType().getKey()) {
+            // 中断流程
+            throw new ParameterException("您无权进行此操作!");
+        }
+        // 取得用户信息
+        UserInfo info = userInfoService.getUserInfoByKey(params.getUserId());
+        // 异常处理
+        if (null == info) {
+            // 中断流程
+            throw new ParameterException("用户信息不存在!");
+        }
+        // 设定为用户类型
+        info.setUserType(params.getUserType().getKey());
+        // 更新时间
+        info.setUpdTime(new Date());
+        // 更新数据
+        userInfoService.updateUserInfoByKey(info);
     }
 
     /**
@@ -104,7 +180,7 @@ public class UserLoginService {
         // 如果DB中没有数据
         if (null == userInfo) {
             // 生成用户信息数据,默认都是未知类型,待审核
-            userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), openId, sessionKey, info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
+            userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), openId, sessionKey, info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
             // 新增数据
             userInfoService.addUserInfo(userInfo);
             // 返回用户数据

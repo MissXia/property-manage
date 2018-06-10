@@ -26,7 +26,7 @@ public class UserInfoUtils {
      * @param language
      * @return
      */
-    public static UserInfo generateUserInfo(UserInfo info, String nickName, String phoneNumber, Integer userType, String avatarUrl, Integer gender, String openId, String sessionKey, String city, String province, String country, String language) {
+    public static UserInfo generateUserInfo(UserInfo info, String nickName, String unitNumber, String phoneNumber, Integer userType, String avatarUrl, Integer gender, String openId, String sessionKey, String city, String province, String country, String language) {
         // 如果是新增的情况
         if (null == info) {
             // 实例化对象
@@ -36,6 +36,8 @@ public class UserInfoUtils {
         }
         // 用户昵称
         info.setNickName(nickName);
+        // 单元编号
+        info.setUnitNumber(unitNumber);
         // 手机号码
         info.setPhoneNumber(phoneNumber);
         // 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员

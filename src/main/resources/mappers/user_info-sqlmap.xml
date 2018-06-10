@@ -4,6 +4,7 @@
     <resultMap id="userInfo" type="com.property.manage.common.pojo.UserInfo">
         <result property="id" column="id"/>
         <result property="nickName" column="nick_name"/>
+        <result property="unitNumber" column="unit_number"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="userType" column="user_type"/>
         <result property="avatarUrl" column="avatar_url"/>
@@ -20,7 +21,7 @@
 
     <sql id="table_name">user_info</sql>
 
-    <sql id="base_col">id,nick_name,phone_number,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time</sql>
+    <sql id="base_col">id,nick_name,unit_number,phone_number,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time</sql>
 
     <sql id="base_select">
         SELECT
@@ -38,6 +39,9 @@
                 <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
                     #{item}
                 </foreach>
+            </if>
+            <if test="unitNumber != null">
+                AND unit_number=#{unitNumber}
             </if>
             <if test="nickName != null">
                 AND nick_name=#{nickName}
@@ -81,6 +85,7 @@
                 <foreach collection="orderFields" item="item" separator="," close="" open="">
                     <if test="item != null and item.fieldName == 'id'.toString()">id</if>
                     <if test="item != null and item.fieldName == 'nick_name'.toString()">nick_name</if>
+                    <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
                     <if test="item != null and item.fieldName == 'phone_number'.toString()">phone_number</if>
                     <if test="item != null and item.fieldName == 'user_type'.toString()">user_type</if>
                     <if test="item != null and item.fieldName == 'avatar_url'.toString()">avatar_url</if>
@@ -134,6 +139,9 @@
             </if>
             <if test="nickName != null ">,
                 nick_name = #{nickName}
+            </if>
+            <if test="unitNumber != null">,
+                unit_number = #{unitNumber}
             </if>
             <if test="phoneNumber != null ">,
                 phone_number = #{phoneNumber}
@@ -196,6 +204,9 @@
             <if test="nickName != null ">,
                 nick_name
             </if>
+            <if test="unitNumber != null">,
+                unit_number
+            </if>
             <if test="phoneNumber != null ">,
                 phone_number
             </if>
@@ -236,6 +247,9 @@
             </if>
             <if test="nickName != null">,
                 #{nickName}
+            </if>
+            <if test="unitNumber != null">,
+                #{unitNumber}
             </if>
             <if test="phoneNumber != null">,
                 #{phoneNumber}
