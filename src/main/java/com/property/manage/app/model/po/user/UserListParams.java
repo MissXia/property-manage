@@ -1,4 +1,4 @@
-package com.property.manage.app.model.po;
+package com.property.manage.app.model.po.user;
 
 
 import com.google.common.collect.Lists;

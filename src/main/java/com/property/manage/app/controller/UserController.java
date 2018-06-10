@@ -1,7 +1,7 @@
 package com.property.manage.app.controller;
 
-import com.property.manage.app.model.po.*;
-import com.property.manage.app.service.UserLoginService;
+import com.property.manage.app.model.po.user.*;
+import com.property.manage.app.service.user.UserLoginService;
 import com.property.manage.base.controller.BaseController;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.exception.SessionException;

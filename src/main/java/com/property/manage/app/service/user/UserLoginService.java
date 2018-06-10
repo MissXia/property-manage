@@ -1,7 +1,7 @@
-package com.property.manage.app.service;
+package com.property.manage.app.service.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.property.manage.app.model.po.*;
+import com.property.manage.app.model.po.user.*;
 import com.property.manage.base.constants.MiniConstants;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
@@ -61,6 +61,8 @@ public class UserLoginService {
         query.setPage(params.getPage());
         // 显示条数
         query.setPageSize(params.getPageSize());
+        // 按创建时间倒序
+        query.orderbyAddTime(false);
         // 返回结果
         return userInfoService.getUserInfoListWithPage(query);
     }
@@ -97,7 +99,7 @@ public class UserLoginService {
      */
     public void unitNumber(UserInfo userInfo, UserUnitParams params) throws ParameterException {
         // 如果权限小于普通员工
-        if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
+        if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
         }
