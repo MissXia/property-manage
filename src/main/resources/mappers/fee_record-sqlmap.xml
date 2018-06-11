@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FeeRecord">
+
+    <resultMap id="feeRecord" type="com.property.manage.common.pojo.FeeRecord">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="theMonth" column="the_month"/>
+        <result property="planPayFee" column="plan_pay_fee"/>
+        <result property="realPayFee" column="real_pay_fee"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="ticketTime" column="ticket_time"/>
+        <result property="ticketStatus" column="ticket_status"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updTime" column="upd_time"/>
+    </resultMap>
+
+    <sql id="table_name">fee_record</sql>
+
+    <sql id="base_col">id,user_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time</sql>
+
+    <sql id="base_select">
+        SELECT
+        <include refid="base_col"/>
+        FROM
+        <include refid="table_name"/>
+    </sql>
+    <!-- Select SQL -->
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                AND id=#{id}
+            </if>
+            <if test="keys != null">
+                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="userId != null">
+                AND user_id=#{userId}
+            </if>
+            <if test="itemId != null">
+                AND item_id=#{itemId}
+            </if>
+            <if test="theMonth != null">
+                AND the_month=#{theMonth}
+            </if>
+            <if test="planPayFee != null">
+                AND plan_pay_fee=#{planPayFee}
+            </if>
+            <if test="realPayFee != null">
+                AND real_pay_fee=#{realPayFee}
+            </if>
+            <if test="payTimeStart != null">
+                AND pay_time &gt;= #{payTimeStart}
+            </if>
+            <if test="payTimeEnd != null">
+                AND pay_time &lt;= #{payTimeEnd}
+            </if>
+            <if test="payTimeEqual != null">
+                AND pay_time = #{payTimeEqual}
+            </if>
+            <if test="payStatus != null">
+                AND pay_status=#{payStatus}
+            </if>
+            <if test="ticketTimeStart != null">
+                AND ticket_time &gt;= #{ticketTimeStart}
+            </if>
+            <if test="ticketTimeEnd != null">
+                AND ticket_time &lt;= #{ticketTimeEnd}
+            </if>
+            <if test="ticketTimeEqual != null">
+                AND ticket_time = #{ticketTimeEqual}
+            </if>
+            <if test="ticketStatus != null">
+                AND ticket_status=#{ticketStatus}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order">
+        <if test="orderFields != null">
+            <trim prefix=" ORDER BY ">
+                <foreach collection="orderFields" item="item" separator="," close="" open="">
+                    <if test="item != null and item.fieldName == 'id'.toString()">id</if>
+                    <if test="item != null and item.fieldName == 'user_id'.toString()">user_id</if>
+                    <if test="item != null and item.fieldName == 'item_id'.toString()">item_id</if>
+                    <if test="item != null and item.fieldName == 'the_month'.toString()">the_month</if>
+                    <if test="item != null and item.fieldName == 'plan_pay_fee'.toString()">plan_pay_fee</if>
+                    <if test="item != null and item.fieldName == 'real_pay_fee'.toString()">real_pay_fee</if>
+                    <if test="item != null and item.fieldName == 'pay_time'.toString()">pay_time</if>
+                    <if test="item != null and item.fieldName == 'pay_status'.toString()">pay_status</if>
+                    <if test="item != null and item.fieldName == 'ticket_time'.toString()">ticket_time</if>
+                    <if test="item != null and item.fieldName == 'ticket_status'.toString()">ticket_status</if>
+                    <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
+                    <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
+                    <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
+                    <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
+                    <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
+                    <if test="item != null and item.order.key == 'desc'.toString()">desc</if>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test="startRow != null ">LIMIT #{startRow},#{pageSize}</if>
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="getFeeRecordByKey" resultMap="feeRecord" parameterType="hashMap">
+        <include refid="base_select"/>
+        WHERE id=#{id}
+    </select>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByKey" parameterType="hashMap">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE id=#{id}
+    </delete>
+
+
+    <!-- 根据主键更新 -->
+    <update id="updateFeeRecordByKey" parameterType="FeeRecord">
+        UPDATE
+        <include refid="table_name"/>
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="id != null ">,
+                id = #{id}
+            </if>
+            <if test="userId != null ">,
+                user_id = #{userId}
+            </if>
+            <if test="itemId != null ">,
+                item_id = #{itemId}
+            </if>
+            <if test="theMonth != null ">,
+                the_month = #{theMonth}
+            </if>
+            <if test="planPayFee != null ">,
+                plan_pay_fee = #{planPayFee}
+            </if>
+            <if test="realPayFee != null ">,
+                real_pay_fee = #{realPayFee}
+            </if>
+            <if test="payTime != null ">,
+                pay_time = #{payTime}
+            </if>
+            <if test="payStatus != null ">,
+                pay_status = #{payStatus}
+            </if>
+            <if test="ticketTime != null ">,
+                ticket_time = #{ticketTime}
+            </if>
+            <if test="ticketStatus != null ">,
+                ticket_status = #{ticketStatus}
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <!-- 分页 -->
+    <select id="getFeeRecordListWithPage" parameterType="hashMap" resultMap="feeRecord">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+        <include refid="limit"/>
+    </select>
+    <select id="getFeeRecordListCount" parameterType="hashMap" resultType="int">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <include refid="where"/>
+    </select>
+    <select id="getFeeRecordList" parameterType="hashMap" resultMap="feeRecord">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+    </select>
+
+    <insert id="insertFeeRecord" parameterType="FeeRecord">
+        INSERT INTO
+        <include refid="table_name"/>
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null ">,
+                id
+            </if>
+            <if test="userId != null ">,
+                user_id
+            </if>
+            <if test="itemId != null ">,
+                item_id
+            </if>
+            <if test="theMonth != null ">,
+                the_month
+            </if>
+            <if test="planPayFee != null ">,
+                plan_pay_fee
+            </if>
+            <if test="realPayFee != null ">,
+                real_pay_fee
+            </if>
+            <if test="payTime != null ">,
+                pay_time
+            </if>
+            <if test="payStatus != null ">,
+                pay_status
+            </if>
+            <if test="ticketTime != null ">,
+                ticket_time
+            </if>
+            <if test="ticketStatus != null ">,
+                ticket_status
+            </if>
+            ,add_time
+            ,upd_time
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null">,
+                #{id}
+            </if>
+            <if test="userId != null">,
+                #{userId}
+            </if>
+            <if test="itemId != null">,
+                #{itemId}
+            </if>
+            <if test="theMonth != null">,
+                #{theMonth}
+            </if>
+            <if test="planPayFee != null">,
+                #{planPayFee}
+            </if>
+            <if test="realPayFee != null">,
+                #{realPayFee}
+            </if>
+            <if test="payTime != null">,
+                #{payTime}
+            </if>
+            <if test="payStatus != null">,
+                #{payStatus}
+            </if>
+            <if test="ticketTime != null">,
+                #{ticketTime}
+            </if>
+            <if test="ticketStatus != null">,
+                #{ticketStatus}
+            </if>
+            ,now()
+            ,now()
+        </trim>
+    </insert>
+
+</mapper>
