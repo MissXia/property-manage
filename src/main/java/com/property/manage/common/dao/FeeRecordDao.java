@@ -3,7 +3,9 @@ package com.property.manage.common.dao;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.mappers.FeeRecordMapper;
 import com.property.manage.common.pojo.FeeRecord;
+import com.property.manage.common.pojo.FeeRecordView;
 import com.property.manage.common.query.FeeRecordQuery;
+import com.property.manage.common.query.FeeRecordViewQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +101,37 @@ public class FeeRecordDao {
      */
     public List<FeeRecord> getFeeRecordList(FeeRecordQuery query) throws SQLException {
         return feeRecordMapper.getFeeRecordList(query.getParams());
+    }
+
+    /**
+     * 按条件分页查询
+     *
+     * @param query
+     * @return
+     */
+    public Result<FeeRecordView> getFeeRecordViewListWithPage(FeeRecordViewQuery query) throws SQLException {
+        Result<FeeRecordView> rs = new Result<FeeRecordView>();
+        Map<String, Object> params = query.getParams();
+        Integer count = feeRecordMapper.getFeeRecordViewListCount(params);
+        rs.setCount(count);
+        if (count <= 0) {
+            return rs;
+        }
+        try {
+            rs.setList(feeRecordMapper.getFeeRecordViewListWithPage(params));
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @param query
+     * @return
+     */
+    public List<FeeRecordView> getFeeRecordViewList(FeeRecordViewQuery query) throws SQLException {
+        return feeRecordMapper.getFeeRecordViewList(query.getParams());
     }
 }

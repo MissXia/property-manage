@@ -1,6 +1,7 @@
 package com.property.manage.common.mappers;
 
 import com.property.manage.common.pojo.FeeRecord;
+import com.property.manage.common.pojo.FeeRecordView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -65,4 +66,27 @@ public interface FeeRecordMapper {
      * @return
      */
     List<FeeRecord> getFeeRecordList(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 根据参数查找记录数
+     *
+     * @return
+     * @throws SQLException
+     */
+    Integer getFeeRecordViewListCount(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 根据参数分页查询
+     *
+     * @return
+     * @throws SQLException
+     */
+    List<FeeRecordView> getFeeRecordViewListWithPage(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    List<FeeRecordView> getFeeRecordViewList(Map<String, Object> params) throws SQLException;
 }
