@@ -3,7 +3,9 @@ package com.property.manage.common.service.impl;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.dao.FeeRecordDao;
 import com.property.manage.common.pojo.FeeRecord;
+import com.property.manage.common.pojo.FeeRecordView;
 import com.property.manage.common.query.FeeRecordQuery;
+import com.property.manage.common.query.FeeRecordViewQuery;
 import com.property.manage.common.service.FeeRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +88,30 @@ public class FeeRecordServiceImpl implements FeeRecordService {
             return feeRecordDao.getFeeRecordList(query);
         } catch (SQLException e) {
             logger.error("get FeeRecord list error." + e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Result<FeeRecordView> getFeeRecordViewListWithPage(FeeRecordViewQuery query) {
+        Result<FeeRecordView> rs = null;
+        try {
+            rs = feeRecordDao.getFeeRecordViewListWithPage(query);
+            if (!rs.isSuccess()) {
+                logger.error("get FeeRecordView error." + rs.getErrorMsg());
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    @Override
+    public List<FeeRecordView> getFeeRecordViewList(FeeRecordViewQuery query) {
+        try {
+            return feeRecordDao.getFeeRecordViewList(query);
+        } catch (SQLException e) {
+            logger.error("get FeeRecordView list error." + e.getMessage(), e);
         }
         return Collections.emptyList();
     }

@@ -3,7 +3,9 @@ package com.property.manage.common.service;
 
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.pojo.FeeRecord;
+import com.property.manage.common.pojo.FeeRecordView;
 import com.property.manage.common.query.FeeRecordQuery;
+import com.property.manage.common.query.FeeRecordViewQuery;
 
 import java.util.List;
 
@@ -54,4 +56,20 @@ public interface FeeRecordService {
      * @return
      */
     List<FeeRecord> getFeeRecordList(FeeRecordQuery query);
+
+    /**
+     * 根据条件查询分页查询
+     *
+     * @param query 查询条件
+     * @return
+     */
+    Result<FeeRecordView> getFeeRecordViewListWithPage(FeeRecordViewQuery query);
+
+    /**
+     * 根据条件查询
+     *
+     * @param query 查询条件
+     * @return
+     */
+    List<FeeRecordView> getFeeRecordViewList(FeeRecordViewQuery query);
 }
