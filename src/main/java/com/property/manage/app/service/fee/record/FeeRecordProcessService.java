@@ -1,9 +1,6 @@
 package com.property.manage.app.service.fee.record;
 
-import com.property.manage.app.model.po.fee.record.FeeRecordAddParams;
-import com.property.manage.app.model.po.fee.record.FeeRecordDelParams;
-import com.property.manage.app.model.po.fee.record.FeeRecordListParams;
-import com.property.manage.app.model.po.fee.record.FeeRecordUpdParams;
+import com.property.manage.app.model.po.fee.record.*;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
@@ -320,5 +317,92 @@ public class FeeRecordProcessService {
         }
         // 删除记录
         feeRecordService.deleteByKey(feeRecord.getId());
+    }
+
+    /**
+     * 缴费状态修改
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void feeRecordPay(UserInfo userInfo, FeeRecordPayParams params) throws ParameterException {
+        // 如果权限小于管理员
+        if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
+            // 中断流程
+            throw new ParameterException("您无权进行此操作!");
+        }
+        // 收费记录ID
+        CheckUtils.ObjectNotNull(params.getRecordId(), "收费记录ID", null);
+        // 实收金额
+        CheckUtils.ObjectNotNull(params.getRealPayFee(), "实收金额", null);
+        // 查找对应的项目
+        FeeRecord feeRecord = feeRecordService.getFeeRecordByKey(params.getRecordId());
+        // 异常处理
+        if (null == feeRecord) {
+            // 中断流程
+            throw new ParameterException("收费记录不存在");
+        }
+        // 如果已经缴费
+        if (feeRecord.getPayStatus().equals(PayStatus.PAY.getKey())) {
+            // 中断流程
+            throw new ParameterException("收费记录已缴费!");
+        }
+        // 当前时间
+        Date now = new Date();
+        // 缴费状态
+        feeRecord.setPayStatus(PayStatus.PAY.getKey());
+        // 实收金额
+        feeRecord.setRealPayFee(params.getRealPayFee());
+        // 缴费时间
+        feeRecord.setPayTime(null == params.getPayTime() ? now : params.getPayTime());
+        // 更新时间
+        feeRecord.setUpdTime(now);
+        // 更新数据
+        feeRecordService.updateFeeRecordByKey(feeRecord);
+    }
+
+    /**
+     * 收费记录开票
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void feeRecordTicket(UserInfo userInfo, FeeRecordTicketParams params) throws ParameterException {
+        // 如果权限小于管理员
+        if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
+            // 中断流程
+            throw new ParameterException("您无权进行此操作!");
+        }
+        // 收费记录ID
+        CheckUtils.ObjectNotNull(params.getRecordId(), "收费记录ID", null);
+        // 查找对应的项目
+        FeeRecord feeRecord = feeRecordService.getFeeRecordByKey(params.getRecordId());
+        // 异常处理
+        if (null == feeRecord) {
+            // 中断流程
+            throw new ParameterException("收费记录不存在");
+        }
+        // 如果未缴费
+        if (!feeRecord.getPayStatus().equals(PayStatus.PAY.getKey())) {
+            // 中断流程
+            throw new ParameterException("收费记录还未缴费不能开票!");
+        }
+        // 如果已经开票
+        if (feeRecord.getTicketStatus().equals(TicketStatus.TICKET.getKey())) {
+            // 中断流程
+            throw new ParameterException("收费记录已开票!");
+        }
+        // 当前时间
+        Date now = new Date();
+        // 开票状态
+        feeRecord.setTicketStatus(TicketStatus.TICKET.getKey());
+        // 开票时间
+        feeRecord.setTicketTime(null == params.getTicketTime() ? now : params.getTicketTime());
+        // 更新时间
+        feeRecord.setUpdTime(now);
+        // 更新数据
+        feeRecordService.updateFeeRecordByKey(feeRecord);
     }
 }
