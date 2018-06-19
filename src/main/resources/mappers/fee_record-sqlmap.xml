@@ -250,7 +250,7 @@
 
 
     <!-- 根据主键更新 -->
-    <update id="updateFeeRecordByKey" parameterType="FeeRecord">
+    <update id="updateFeeRecordByKey" parameterType="com.property.manage.common.pojo.FeeRecord">
         UPDATE
         <include refid="table_name"/>
         <trim prefix="SET" prefixOverrides=",">
@@ -323,7 +323,7 @@
         <include refid="order_view"/>
     </select>
 
-    <insert id="insertFeeRecord" parameterType="FeeRecord">
+    <insert id="insertFeeRecord" parameterType="com.property.manage.common.pojo.FeeRecord">
         INSERT INTO
         <include refid="table_name"/>
         <trim prefix="(" suffix=")" prefixOverrides=",">

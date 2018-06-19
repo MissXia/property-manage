@@ -72,7 +72,7 @@
 
 
     <!-- 根据主键更新 -->
-    <update id="updateFeeItemByKey" parameterType="FeeItem">
+    <update id="updateFeeItemByKey" parameterType="com.property.manage.common.pojo.FeeItem">
         UPDATE
         <include refid="table_name"/>
         <trim prefix="SET" prefixOverrides=",">
@@ -103,7 +103,7 @@
         <include refid="order"/>
     </select>
 
-    <insert id="insertFeeItem" parameterType="FeeItem">
+    <insert id="insertFeeItem" parameterType="com.property.manage.common.pojo.FeeItem">
         INSERT INTO
         <include refid="table_name"/>
         <trim prefix="(" suffix=")" prefixOverrides=",">

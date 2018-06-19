@@ -61,7 +61,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="info" />
             <appender-ref ref="error" />
         </root>
