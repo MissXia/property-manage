@@ -1,6 +1,8 @@
 package com.property.manage.app.service.fee.record;
 
 import com.property.manage.app.model.po.fee.record.*;
+import com.property.manage.base.excel.service.ExportExcel;
+import com.property.manage.base.excel.utils.ExcelUtils;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -405,4 +408,16 @@ public class FeeRecordProcessService {
         // 更新数据
         feeRecordService.updateFeeRecordByKey(feeRecord);
     }
+
+    public void uploadTemplate(HttpServletResponse rsp, UserInfo userInfo) throws ParameterException {
+        // 实例化导出对象
+        ExportExcel exportExcel = new ExportExcel();
+        // 表头数组
+        String[] head = {};
+        // 设定表头
+        exportExcel.setHeader(ExcelUtils.excelHeader(head));
+        // 下载Excel
+        exportExcel.downloadExcel("收费记录导入模板", null, rsp);
+    }
+
 }
