@@ -73,6 +73,24 @@ public class FeeItemProcessService {
     }
 
     /**
+     * 按名称查找项目
+     *
+     * @param itemName
+     * @return
+     */
+    public FeeItem findFeeItem(String itemName) {
+        // 按名称查找项目
+        List<FeeItem> items = findFeeItemList(itemName);
+        // 异常处理
+        if (CollectionUtils.isEmpty(items)) {
+            // 中断流程
+            return null;
+        }
+        // 返回数据
+        return items.get(0);
+    }
+
+    /**
      * 新增收费项目
      *
      * @param params
@@ -85,7 +103,7 @@ public class FeeItemProcessService {
             throw new ParameterException("您无权进行此操作!");
         }
         // 收费项目名称
-        CheckUtils.StringNotBlank(params.getItemName(), "收费项目名称" , null);
+        CheckUtils.StringNotBlank(params.getItemName(), "收费项目名称", null);
         // 按名称查找项目
         List<FeeItem> items = findFeeItemList(params.getItemName());
         // 异常处理
@@ -118,9 +136,9 @@ public class FeeItemProcessService {
             throw new ParameterException("您无权进行此操作!");
         }
         // 收费项目ID
-        CheckUtils.ObjectNotNull(params.getItemId(), "收费项目ID" , null);
+        CheckUtils.ObjectNotNull(params.getItemId(), "收费项目ID", null);
         // 收费项目名称
-        CheckUtils.StringNotBlank(params.getItemName(), "收费项目名称" , null);
+        CheckUtils.StringNotBlank(params.getItemName(), "收费项目名称", null);
         // 查找对应的项目
         FeeItem feeItem = feeItemService.getFeeItemByKey(params.getItemId());
         // 异常处理
@@ -162,7 +180,7 @@ public class FeeItemProcessService {
             throw new ParameterException("您无权进行此操作!");
         }
         // 收费项目名称
-        CheckUtils.ObjectNotNull(params.getItemId(), "收费项目ID" , null);
+        CheckUtils.ObjectNotNull(params.getItemId(), "收费项目ID", null);
         // 查找对应的项目
         FeeItem feeItem = feeItemService.getFeeItemByKey(params.getItemId());
         // 异常处理

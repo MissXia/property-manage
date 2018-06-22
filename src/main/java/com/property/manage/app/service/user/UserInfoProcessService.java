@@ -12,6 +12,7 @@ import com.property.manage.common.pojo.UserInfo;
 import com.property.manage.common.query.UserInfoQuery;
 import com.property.manage.common.service.UserInfoService;
 import com.property.manage.common.utils.UserInfoUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +20,16 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 管辉俊
  * @since 2018-05-22
  */
 @Service
-public class UserLoginService {
+public class UserInfoProcessService {
 
-    private static Logger logger = LoggerFactory.getLogger(UserLoginService.class);
+    private static Logger logger = LoggerFactory.getLogger(UserInfoProcessService.class);
 
     @Resource
     private UserInfoService userInfoService;
@@ -68,6 +70,32 @@ public class UserLoginService {
     }
 
     /**
+     * 按手机号码查找用户
+     *
+     * @param phoneNumber
+     * @return
+     */
+    public UserInfo findUserInfoByPhoneNumber(String phoneNumber) {
+        // 查询参数
+        UserInfoQuery query = new UserInfoQuery();
+        // 手机号码
+        query.setPhoneNumber(phoneNumber);
+        // 页码
+        query.setPage(1);
+        // 显示条数
+        query.setPageSize(1);
+        // 查询列表
+        List<UserInfo> infos = userInfoService.getUserInfoList(query);
+        // 异常处理
+        if (CollectionUtils.isEmpty(infos)) {
+            // 中断流程
+            return null;
+        }
+        // 返回数据
+        return infos.get(0);
+    }
+
+    /**
      * 设定用户手机号码
      *
      * @param userInfo
@@ -81,6 +109,13 @@ public class UserLoginService {
         if (null == info) {
             // 中断流程
             throw new ParameterException("用户信息不存在!");
+        }
+        // 按手机号码查找用户
+        UserInfo phoneInfo = findUserInfoByPhoneNumber(params.getPhoneNumber());
+        // 如果存在
+        if (null != phoneInfo) {
+            // 中断流程
+            throw new ParameterException("该手机号码已经有人使用!");
         }
         // 设定手机号码
         info.setPhoneNumber(params.getPhoneNumber());

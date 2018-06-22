@@ -19,7 +19,9 @@ import com.property.manage.base.excel.enums.CellStatus;
 import com.property.manage.base.excel.model.CellData;
 import com.property.manage.base.excel.model.Header;
 import com.property.manage.base.model.constants.CommonConstants;
+import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.utils.CastUtils;
+import com.property.manage.base.model.utils.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,25 @@ public class ExcelUtils {
      * EXCEL导出头部字段名称
      */
     public static final String REQUIRED = "(必填)";
+
+    /**
+     * 提前检查
+     *
+     * @param cellDatas
+     * @throws ParameterException
+     */
+    public static void cellDataCheck(Map<String, CellData> cellDatas, String message) throws ParameterException {
+        // 转换列表
+        List<CellData> cellDataList = ListUtils.map2List(cellDatas);
+        // 循环处理
+        for (CellData cellData : cellDataList) {
+            // 有异常情况
+            if (CellStatus.ERROR.equals(cellData.getStatus()) || CellStatus.WARNING.equals(cellData.getStatus())) {
+                // 抛出异常
+                throw new ParameterException(StringUtils.isNotBlank(message) ? message : "检查有异常,终止本条数据导入");
+            }
+        }
+    }
 
     /**
      * Description: 转换Excel表头<br>

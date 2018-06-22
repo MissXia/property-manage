@@ -75,26 +75,12 @@ public class BaseQuery implements Serializable {
      */
     private String tableId;
 
-    /**
-     * 企业id
-     */
-    private String corpId;
-
     public String getTableId() {
         return tableId;
     }
 
     public void setTableId(String tableId) {
         this.tableId = tableId;
-    }
-
-    public String getCorpId() {
-        return corpId;
-    }
-
-    public BaseQuery setCorpId(String corpId) {
-        this.corpId = corpId;
-        return this;
     }
 
     public Integer getStartRow() {
@@ -147,8 +133,6 @@ public class BaseQuery implements Serializable {
     public Map<String, Object> getParams() throws SQLException {
         // 分表ID
         this.params.put("tableId", this.getTableId());
-        // 企业id
-        this.params.put("corpId", this.getCorpId());
         // 当前页码
         this.params.put("page", this.getPage());
         // 每页显示条数

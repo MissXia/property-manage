@@ -1,33 +1,45 @@
 package com.property.manage.app.service.fee.record;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.property.manage.app.model.po.fee.record.*;
+import com.property.manage.app.model.vo.record.FeeRecordIO;
+import com.property.manage.app.service.fee.item.FeeItemProcessService;
+import com.property.manage.app.service.user.UserInfoProcessService;
+import com.property.manage.base.excel.model.CellData;
+import com.property.manage.base.excel.model.Header;
 import com.property.manage.base.excel.service.ExportExcel;
 import com.property.manage.base.excel.utils.ExcelUtils;
+import com.property.manage.base.excel.utils.ReadUtils;
+import com.property.manage.base.model.constants.CommonConstants;
+import com.property.manage.base.model.constants.Constants;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
+import com.property.manage.base.model.utils.CastUtils;
 import com.property.manage.base.model.utils.CheckUtils;
 import com.property.manage.common.enums.PayStatus;
 import com.property.manage.common.enums.TicketStatus;
 import com.property.manage.common.enums.UserTypes;
-import com.property.manage.common.pojo.FeeItem;
-import com.property.manage.common.pojo.FeeRecord;
-import com.property.manage.common.pojo.FeeRecordView;
-import com.property.manage.common.pojo.UserInfo;
+import com.property.manage.common.pojo.*;
 import com.property.manage.common.query.FeeRecordQuery;
 import com.property.manage.common.query.FeeRecordViewQuery;
 import com.property.manage.common.service.FeeItemService;
 import com.property.manage.common.service.FeeRecordService;
 import com.property.manage.common.service.UserInfoService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 管辉俊
@@ -45,7 +57,19 @@ public class FeeRecordProcessService {
     private UserInfoService userInfoService;
 
     @Resource
+    private UserInfoProcessService userInfoProcessService;
+
+    @Resource
     private FeeItemService feeItemService;
+
+    @Resource
+    private FeeItemProcessService feeItemProcessService;
+
+    @Resource
+    private FeeRecordUploadProcessService feeRecordUploadProcessService;
+
+    // 表头数组
+    public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "手机号码:phoneNumber", "应收金额:planPayFee"};
 
     /**
      * 查询收费列表
@@ -409,15 +433,266 @@ public class FeeRecordProcessService {
         feeRecordService.updateFeeRecordByKey(feeRecord);
     }
 
+    /**
+     * 下载导入模板
+     *
+     * @param rsp
+     * @param userInfo
+     * @throws ParameterException
+     */
     public void uploadTemplate(HttpServletResponse rsp, UserInfo userInfo) throws ParameterException {
         // 实例化导出对象
         ExportExcel exportExcel = new ExportExcel();
-        // 表头数组
-        String[] head = {};
         // 设定表头
         exportExcel.setHeader(ExcelUtils.excelHeader(head));
         // 下载Excel
         exportExcel.downloadExcel("收费记录导入模板", null, rsp);
     }
 
+    public FeeRecordUpload upload(UserInfo userInfo, MultipartFile file) throws ParameterException {
+        // 取得上传记录
+        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUploadExceptJson(userInfo.getId());
+        // 如果正在导入
+        if (null != upload && upload.getStatus() == Constants.UPLOAD_STATUS_DOING) {
+            // 中断流程
+            throw new ParameterException("您还有正在导入的数据,请稍后再继续!");
+        }
+        // 表头列表
+        List<Header> headers = ExcelUtils.excelHeader(head);
+        // 异常处理
+        if (null == headers || headers.isEmpty()) {
+            // 中断流程
+            throw new ParameterException("表头生成失败!");
+        }
+        // 生成导入Excel数据
+        List<Map<String, CellData>> excelDatas = ReadUtils.makeExcelCellDatas(file, headers);
+        // 更新上传记录
+        upload = feeRecordUploadProcessService.makeFeeRecordUpload(upload, userInfo.getId(), excelDatas.size(), 0, null, Constants.UPLOAD_STATUS_DOING);
+        // 批量导入客户数据
+        List<Map<String, CellData>> errorDatas = uploadFeeRecords(userInfo, excelDatas);
+        // 更新上传记录
+        feeRecordUploadProcessService.makeFeeRecordUpload(upload, userInfo.getId(), excelDatas.size(), errorDatas.size(), JSONArray.toJSONStringWithDateFormat(errorDatas, Constants.yyyy_MM_dd_HH_mm_ss), null);
+        // 清除记录
+        upload.setErrorJson(CommonConstants.STR_BLANK);
+        // 返回上传记录
+        return upload;
+    }
+
+    /**
+     * 导入记录列表
+     *
+     * @param userInfo
+     * @param excelDatas
+     * @return
+     * @throws ParameterException
+     */
+    private List<Map<String, CellData>> uploadFeeRecords(UserInfo userInfo, List<Map<String, CellData>> excelDatas) throws ParameterException {
+        // 错误记录
+        List<Map<String, CellData>> errorDatas = Lists.newArrayList();
+        // 循环处理
+        for (Map<String, CellData> cellDatas : excelDatas) {
+            try {
+                // 上传单个客户
+                uploadFeeRecord(userInfo, cellDatas);
+            } catch (Exception e) {
+                logger.error("===批量导入记录===" + e.getMessage());
+                // 添加到错误列表中
+                errorDatas.add(cellDatas);
+            }
+        }
+        // 返回错误数据
+        return errorDatas;
+    }
+
+    /**
+     * 导入单条记录
+     *
+     * @param userInfo
+     * @param cellDatas
+     * @throws ParameterException
+     */
+    private void uploadFeeRecord(UserInfo userInfo, Map<String, CellData> cellDatas) throws ParameterException {
+        // 转换数据
+        Map<String, Object> datas = ExcelUtils.convCellDatas(cellDatas);
+        // 转换对象
+        FeeRecordIO io = parseFeeRecord(cellDatas, datas);
+        // 简单检查
+        recordSimpleCheck(cellDatas, io);
+        // 简单检查异常抛出
+        ExcelUtils.cellDataCheck(cellDatas, null);
+        // 收费项目检查
+        FeeItem item = feeItemCheck(io, cellDatas);
+        // 单元用户检查
+        UserInfo info = userInfoCheck(io, cellDatas);
+        // 简单检查异常抛出
+        ExcelUtils.cellDataCheck(cellDatas, null);
+        // 上传单条记录
+        updateFeeRecord(io, item, info);
+    }
+
+    /**
+     * 上传单条记录
+     *
+     * @param io
+     * @param item
+     * @param info
+     * @throws ParameterException
+     */
+    private void updateFeeRecord(FeeRecordIO io, FeeItem item, UserInfo info) throws ParameterException {
+        // 实例化对象
+        FeeRecord record = new FeeRecord();
+        // 用户ID
+        record.setUserId(info.getId());
+        // 项目ID
+        record.setItemId(item.getId());
+        // 所属月份
+        record.setTheMonth(io.getTheMonth());
+        // 应收金额
+        record.setPlanPayFee(io.getPlanPayFee());
+        // 实收金额
+        record.setRealPayFee(BigDecimal.ZERO);
+        // 缴费状态
+        record.setPayStatus(PayStatus.UN_PAY.getKey());
+        // 开票状态
+        record.setTicketStatus(TicketStatus.UN_TICKET.getKey());
+        // 创建时间
+        record.setAddTime(new Date());
+        // 更新时间
+        record.setUpdTime(new Date());
+        // 新增数据
+        feeRecordService.addFeeRecord(record);
+    }
+
+    /**
+     * 解析记录
+     *
+     * @param cellDatas
+     * @param datas
+     * @return
+     * @throws ParameterException
+     */
+    private FeeRecordIO parseFeeRecord(Map<String, CellData> cellDatas, Map<String, Object> datas) throws ParameterException {
+        // 转换对象
+        FeeRecordIO io = null;
+        try {
+            // 转换对象
+            io = CastUtils.parseJson(JSONObject.toJSONString(datas), FeeRecordIO.class);
+            // 如果转换失败
+            if (null == io) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "theMonth", "本行记录的数据格式异常");
+                // 抛出异常
+                throw new ParameterException("本行记录的数据格式异常");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "theMonth", "本行记录的数据格式异常");
+            // 抛出异常
+            throw new ParameterException("本行记录的数据格式异常");
+        }
+        // 返回对象
+        return io;
+    }
+
+    /**
+     * 简单检查
+     *
+     * @param cellDatas
+     * @param io
+     * @throws ParameterException
+     */
+    private void recordSimpleCheck(Map<String, CellData> cellDatas, FeeRecordIO io) throws ParameterException {
+        // 异常判断
+        if (StringUtils.isBlank(io.getTheMonth())) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "theMonth", "所属月份必须输入");
+        }
+        // 异常判断
+        if (null == io.getPlanPayFee()) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "planPayFee", "应收金额必须输入");
+        }
+    }
+
+    /**
+     * 收费项目检查
+     *
+     * @param io
+     * @param cellDatas
+     * @return
+     * @throws ParameterException
+     */
+    private FeeItem feeItemCheck(FeeRecordIO io, Map<String, CellData> cellDatas) throws ParameterException {
+        // 取得信息
+        FeeItem item = feeItemProcessService.findFeeItem(io.getItemName());
+        // 异常处理
+        if (null == item) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "itemName", "收费项目不存在");
+            // 抛出异常
+            throw new ParameterException("收费项目不存在");
+        }
+        // 返回信息
+        return item;
+    }
+
+    /**
+     * 手机号码对应的用户检查
+     *
+     * @param io
+     * @param cellDatas
+     * @return
+     * @throws ParameterException
+     */
+    private UserInfo userInfoCheck(FeeRecordIO io, Map<String, CellData> cellDatas) throws ParameterException {
+        // 查找用户
+        UserInfo info = userInfoProcessService.findUserInfoByPhoneNumber(io.getPhoneNumber());
+        // 如果没有查找到跟进人名称
+        if (null == info) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "phoneNumber", "手机号码对应的用户不存在");
+            // 抛出异常
+            throw new ParameterException("手机号码对应的用户不存在");
+        }
+        // 返回对象
+        return info;
+    }
+
+    /**
+     * 错误记录
+     *
+     * @param rsp
+     * @param userInfo
+     * @throws ParameterException
+     */
+    public void uploadError(HttpServletResponse rsp, UserInfo userInfo) throws ParameterException {
+        // 取得上传记录
+        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUpload(userInfo.getId());
+        // 异常处理
+        if (null == upload) {
+            // 中断流程
+            throw new ParameterException("您还没有导入过数据!");
+        }
+        // 如果正在导入
+        if (upload.getStatus() == Constants.UPLOAD_STATUS_DOING) {
+            // 中断流程
+            throw new ParameterException("您还有正在导入的数据,请稍后再继续!");
+        }
+        // 取得错误数据
+        List<Map<String, CellData>> datas = ExcelUtils.makeJsonToListCellDatas(upload.getErrorJson());
+        // 没有需要导出的数据
+        if (null == datas || datas.isEmpty()) {
+            // 中断流程
+            throw new ParameterException("没有需要导出的数据!");
+        }
+        // 表头列表
+        List<Header> headers = ExcelUtils.excelHeader(head);
+        // 实例化导出对象
+        ExportExcel exportExcel = new ExportExcel();
+        // 设定表头
+        exportExcel.setHeader(headers);
+        // 下载Excel
+        exportExcel.downloadExcel("收费记录错误数据", datas, rsp);
+    }
 }

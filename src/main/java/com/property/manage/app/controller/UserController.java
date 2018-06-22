@@ -1,7 +1,7 @@
 package com.property.manage.app.controller;
 
 import com.property.manage.app.model.po.user.*;
-import com.property.manage.app.service.user.UserLoginService;
+import com.property.manage.app.service.user.UserInfoProcessService;
 import com.property.manage.base.controller.BaseController;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.exception.SessionException;
@@ -22,7 +22,7 @@ public class UserController extends BaseController {
     private UserInfoService userInfoService;
 
     @Autowired
-    private UserLoginService userLoginService;
+    private UserInfoProcessService userInfoProcessService;
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -30,7 +30,7 @@ public class UserController extends BaseController {
         // 取得Session中的用户
         UserInfo userInfo = sessionService.getUserInfo();
         // 返回数据
-        return Response.success(userLoginService.userInfoResult(userInfo, params));
+        return Response.success(userInfoProcessService.userInfoResult(userInfo, params));
     }
 
     @ResponseBody
@@ -39,7 +39,7 @@ public class UserController extends BaseController {
         // 取得Session中的用户
         UserInfo userInfo = sessionService.getUserInfo();
         // 审核用户
-        userLoginService.phoneNumber(userInfo, params);
+        userInfoProcessService.phoneNumber(userInfo, params);
         // 返回数据
         return Response.success();
     }
@@ -50,7 +50,7 @@ public class UserController extends BaseController {
         // 取得Session中的用户
         UserInfo userInfo = sessionService.getUserInfo();
         // 审核用户
-        userLoginService.unitNumber(userInfo, params);
+        userInfoProcessService.unitNumber(userInfo, params);
         // 返回数据
         return Response.success();
     }
@@ -61,7 +61,7 @@ public class UserController extends BaseController {
         // 取得Session中的用户
         UserInfo userInfo = sessionService.getUserInfo();
         // 审核用户
-        userLoginService.verifyUserType(userInfo, params);
+        userInfoProcessService.verifyUserType(userInfo, params);
         // 返回数据
         return Response.success();
     }
@@ -70,7 +70,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(HttpServletRequest request, @RequestBody UserLoginParams params) throws ParameterException {
         // 登录操作
-        UserInfo info = userLoginService.login(params);
+        UserInfo info = userInfoProcessService.login(params);
         // 取得SessionId
         info.setSessionId(request.getSession().getId());
         // 返回数据
