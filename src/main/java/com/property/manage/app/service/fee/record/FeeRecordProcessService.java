@@ -91,6 +91,8 @@ public class FeeRecordProcessService {
         query.setPhoneNumber(params.getPhoneNumber());
         // 所属月份
         query.setTheMonth(params.getTheMonth());
+        // 缴费状态
+        query.setPayStatus(params.getPayStatus());
         // 缴费开始时间
         query.setPayTimeStart(params.getPayTimeFrom());
         // 缴费结束时间
@@ -131,6 +133,8 @@ public class FeeRecordProcessService {
         query.setPhoneNumber(params.getPhoneNumber());
         // 所属月份
         query.setTheMonth(params.getTheMonth());
+        // 缴费状态
+        query.setPayStatus(params.getPayStatus());
         // 缴费开始时间
         query.setPayTimeStart(params.getPayTimeFrom());
         // 缴费结束时间

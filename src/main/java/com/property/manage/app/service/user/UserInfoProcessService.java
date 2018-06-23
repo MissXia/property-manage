@@ -1,9 +1,11 @@
 package com.property.manage.app.service.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.property.manage.app.model.po.user.*;
 import com.property.manage.base.constants.MiniConstants;
 import com.property.manage.base.model.exception.ParameterException;
+import com.property.manage.base.model.model.Response;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
 import com.property.manage.base.service.MiniProgramService;
@@ -19,8 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 管辉俊
@@ -182,17 +186,15 @@ public class UserInfoProcessService {
     }
 
     /**
-     * 登录
+     * 登录检查
      *
      * @param params
      * @return
      * @throws ParameterException
      */
-    public UserInfo login(UserLoginParams params) throws ParameterException {
+    public Response loginCheck(HttpServletRequest request, UserLoginParams params) throws ParameterException {
         // 登录code校验
         CheckUtils.StringNotBlank(params.getCode(), "登录code", null);
-        // 用户信息校验
-        CheckUtils.ObjectNotNull(params.getUserInfo(), "用户信息", null);
         // 登录凭证校验
         JSONObject object = MiniProgramService.jscode2sessionApi(params.getCode());
         // 异常处理
@@ -210,14 +212,50 @@ public class UserInfoProcessService {
             // 中断流程
             throw new ParameterException("登录凭证校验失败!");
         }
-        // 取得参数中的info
-        UserInfo info = params.getUserInfo();
+        // 返回数据实例化
+        Map<String, Object> data = Maps.newHashMap();
         // 取得DB中的UserInfo
         UserInfo userInfo = userInfoService.getUserInfoByOpenId(openId);
+        // 如果有注册过
+        if (null != userInfo) {
+            // 取得SessionId
+            userInfo.setSessionId(request.getSession().getId());
+            // 如果DB中有数据说明注册过
+            data.put("userInfo", userInfo);
+        }
+        // 如果没有注册过则返回
+        if (null == userInfo) {
+            // openId
+            data.put("openId", openId);
+            // sessionKey
+            data.put("sessionKey", sessionKey);
+        }
+        // 返回数据
+        return Response.success(data);
+    }
+
+    /**
+     * 登录
+     *
+     * @param params
+     * @return
+     * @throws ParameterException
+     */
+    public UserInfo login(UserLoginParams params) throws ParameterException {
+        // 取得参数中的info
+        UserInfo info = params.getUserInfo();
+        // 用户信息校验
+        CheckUtils.ObjectNotNull(info, "用户信息", null);
+        // 参数校验
+        CheckUtils.StringNotBlank(info.getOpenId(), "用户openId", null);
+        // 参数校验
+        CheckUtils.StringNotBlank(info.getSessionKey(), "用户sessionKey", null);
+        // 取得DB中的UserInfo
+        UserInfo userInfo = userInfoService.getUserInfoByOpenId(info.getOpenId());
         // 如果DB中没有数据
         if (null == userInfo) {
             // 生成用户信息数据,默认都是未知类型,待审核
-            userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), openId, sessionKey, info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
+            userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), info.getOpenId(), info.getSessionKey(), info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
             // 新增数据
             userInfoService.addUserInfo(userInfo);
             // 返回用户数据
@@ -230,9 +268,9 @@ public class UserInfoProcessService {
         // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
         userInfo.setGender(info.getGender());
         // 用户唯一标识
-        userInfo.setOpenId(openId);
+        userInfo.setOpenId(info.getOpenId());
         // 会话密钥
-        userInfo.setSessionKey(sessionKey);
+        userInfo.setSessionKey(info.getSessionKey());
         // 用户所在城市
         userInfo.setCity(info.getCity());
         // 用户所在省份

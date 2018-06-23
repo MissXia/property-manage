@@ -67,6 +67,13 @@ public class UserController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/login/check", method = RequestMethod.POST)
+    public Response loginCheck(HttpServletRequest request, @RequestBody UserLoginParams params) throws ParameterException {
+        // 返回数据
+        return userInfoProcessService.loginCheck(request, params);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(HttpServletRequest request, @RequestBody UserLoginParams params) throws ParameterException {
         // 登录操作

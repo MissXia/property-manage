@@ -33,6 +33,11 @@ public class FeeRecordListParams extends BaseParams {
     private String theMonth;
 
     /**
+     * 缴费状态
+     */
+    private Integer payStatus;
+
+    /**
      * 缴费时间
      */
     private Date payTimeFrom;
@@ -90,6 +95,14 @@ public class FeeRecordListParams extends BaseParams {
 
     public void setTheMonth(String theMonth) {
         this.theMonth = theMonth;
+    }
+
+    public Integer getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(Integer payStatus) {
+        this.payStatus = payStatus;
     }
 
     public Date getPayTimeFrom() {
