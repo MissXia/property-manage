@@ -6,7 +6,10 @@ import com.property.manage.base.model.utils.CastUtils;
 import com.property.manage.common.pojo.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -23,6 +26,22 @@ public class SessionService {
     @ModelAttribute
     public void setHttpServlet(HttpSession session) {
         this.sessionLocal.set(session);
+    }
+
+    public HttpServletRequest getRequest() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        return attributes.getRequest();
+    }
+
+    public HttpSession getSession() throws SessionException {
+        HttpSession session = null;
+        try {
+            session = getRequest().getSession();
+        } catch (Exception e) {
+            // 中断流程
+            throw new SessionException("获取Session失败!");
+        }
+        return session;
     }
 
     /**

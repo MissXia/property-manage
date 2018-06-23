@@ -9,6 +9,7 @@ import com.property.manage.base.model.model.Response;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
 import com.property.manage.base.service.MiniProgramService;
+import com.property.manage.base.session.SessionService;
 import com.property.manage.common.enums.UserTypes;
 import com.property.manage.common.pojo.UserInfo;
 import com.property.manage.common.query.UserInfoQuery;
@@ -37,6 +38,9 @@ public class UserInfoProcessService {
 
     @Resource
     private UserInfoService userInfoService;
+
+    @Resource
+    private SessionService sessionService;
 
     /**
      * 查询用户列表
@@ -222,6 +226,10 @@ public class UserInfoProcessService {
             userInfo.setSessionId(request.getSession().getId());
             // 如果DB中有数据说明注册过
             data.put("userInfo", userInfo);
+            // 清空用户Session
+            sessionService.deleteUserInfo();
+            // 设定用户Session
+            sessionService.setUserInfo(userInfo);
         }
         // 如果没有注册过则返回
         if (null == userInfo) {

@@ -80,6 +80,10 @@ public class UserController extends BaseController {
         UserInfo info = userInfoProcessService.login(params);
         // 取得SessionId
         info.setSessionId(request.getSession().getId());
+        // 清空用户Session
+        sessionService.deleteUserInfo();
+        // 设定用户Session
+        sessionService.setUserInfo(info);
         // 返回数据
         return Response.success(info);
     }

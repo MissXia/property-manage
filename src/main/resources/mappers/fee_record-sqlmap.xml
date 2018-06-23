@@ -39,6 +39,8 @@
 
     <sql id="table_name">fee_record</sql>
 
+    <sql id="table_name_view">fee_record_view</sql>
+
     <sql id="base_col">id,user_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time</sql>
 
     <sql id="base_col_view">id,user_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time,item_name,nick_name,unit_number,phone_number,user_type,avatar_url</sql>
@@ -53,7 +55,7 @@
         SELECT
         <include refid="base_col_view"/>
         FROM
-        <include refid="table_name"/>
+        <include refid="table_name_view"/>
     </sql>
     <!-- Select SQL -->
 
