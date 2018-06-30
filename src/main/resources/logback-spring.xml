@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-
     <!-- appender用来格式化日志输出节点，有俩个属性name和class，class用来指定哪种输出策略，常用就是控制台输出策略和文件输出策略 -->
+    <property name="info_log_home" value="${LOG_PATH}/logs/info"/>
+    <property name="err_log_home" value="${LOG_PATH}/logs/error"/>
 
     <!--　错误日志输出配置　-->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/logs/error/error.log</file>
+        <file>${err_log_home}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/error/error.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <fileNamePattern>${err_log_home}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>15</maxHistory>
+            <maxFileSize>20MB</maxFileSize>
+            <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -17,16 +20,19 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} %line - %msg%n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
     <!-- info日志输出配置 -->
     <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/logs/info/info.log</file>
+        <file>${info_log_home}/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/info/info.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <fileNamePattern>${info_log_home}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>15</maxHistory>
+            <maxFileSize>20MB</maxFileSize>
+            <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -34,14 +40,16 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} %line - %msg%n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
     <!-- 控制台日志输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} %line - %msg%n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 

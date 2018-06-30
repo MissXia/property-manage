@@ -44,6 +44,17 @@ public class SessionService {
         return session;
     }
 
+    public HttpSession getSession(HttpServletRequest request) throws SessionException {
+        HttpSession session = null;
+        try {
+            session = request.getSession();
+        } catch (Exception e) {
+            // 中断流程
+            throw new SessionException("获取Session失败!");
+        }
+        return session;
+    }
+
     /**
      * 向session中设置用户
      *

@@ -1,17 +1,15 @@
 package com.property.manage.app.model.po.user;
 
 
-import com.property.manage.common.enums.UserTypes;
-
 public class UserVerifyTypeParams extends UserOperateParams {
 
-    private UserTypes userType;
+    private Integer userType;
 
-    public UserTypes getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(UserTypes userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 }

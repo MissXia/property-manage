@@ -453,6 +453,14 @@ public class FeeRecordProcessService {
         exportExcel.downloadExcel("收费记录导入模板", null, rsp);
     }
 
+    /**
+     * 批量导入数据
+     *
+     * @param userInfo
+     * @param file
+     * @return
+     * @throws ParameterException
+     */
     public FeeRecordUpload upload(UserInfo userInfo, MultipartFile file) throws ParameterException {
         // 取得上传记录
         FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUploadExceptJson(userInfo.getId());

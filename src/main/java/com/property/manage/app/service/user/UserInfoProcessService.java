@@ -170,7 +170,7 @@ public class UserInfoProcessService {
      */
     public void verifyUserType(UserInfo userInfo, UserVerifyTypeParams params) throws ParameterException {
         // 如果权限小于普通员工
-        if (userInfo.getUserType() <= params.getUserType().getKey()) {
+        if (userInfo.getUserType() <= params.getUserType()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
         }
@@ -182,7 +182,7 @@ public class UserInfoProcessService {
             throw new ParameterException("用户信息不存在!");
         }
         // 设定为用户类型
-        info.setUserType(params.getUserType().getKey());
+        info.setUserType(params.getUserType());
         // 更新时间
         info.setUpdTime(new Date());
         // 更新数据

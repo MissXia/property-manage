@@ -316,7 +316,7 @@
     </select>
     <select id="getFeeRecordViewListCount" parameterType="hashMap" resultType="int">
         SELECT count(1) FROM
-        <include refid="table_name"/>
+        <include refid="table_name_view"/>
         <include refid="where_view"/>
     </select>
     <select id="getFeeRecordViewList" parameterType="hashMap" resultMap="feeRecordView">
