@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <!-- appender用来格式化日志输出节点，有俩个属性name和class，class用来指定哪种输出策略，常用就是控制台输出策略和文件输出策略 -->
-    <property name="info_log_home" value="${LOG_PATH}/logs/info"/>
-    <property name="err_log_home" value="${LOG_PATH}/logs/error"/>
-
     <!--　错误日志输出配置　-->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${err_log_home}/error.log</file>
+        <file>${LOG_PATH}/logs/error/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${err_log_home}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/logs/error/error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>15</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
-            <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -27,12 +21,10 @@
 
     <!-- info日志输出配置 -->
     <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${info_log_home}/info.log</file>
+        <file>${LOG_PATH}/logs/info/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${info_log_home}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/logs/info/info.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>15</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
-            <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>

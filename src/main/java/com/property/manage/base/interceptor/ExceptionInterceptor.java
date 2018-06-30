@@ -88,18 +88,12 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         logger.error(exceptionMsg.toString(), ex);
         Response ajaxResponse = handleException(request, ex);
-        if (request.getRequestURI().endsWith("rjson")) {
-            try {
-                responseJson(request, response, ajaxResponse);
-            } catch (IOException e) {
-                logger.error("响应JSON异常信息的时候报错了.", e);
-            }
-            return null;
-        } else {
-            request.setAttribute("response", ajaxResponse);
-            result = "view-error";
+        try {
+            responseJson(request, response, ajaxResponse);
+        } catch (IOException e) {
+            logger.error("响应JSON异常信息的时候报错了.", e);
         }
-        return new ModelAndView(result, model);
+        return null;
     }
 
     private Response handleException(HttpServletRequest request, Exception except) {
