@@ -71,6 +71,8 @@ public class FeeRecordProcessService {
     // 表头数组
     public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "手机号码:phoneNumber", "应收金额:planPayFee"};
 
+    private final static Long userId = 0L;
+
     /**
      * 查询收费列表
      *
@@ -441,10 +443,9 @@ public class FeeRecordProcessService {
      * 下载导入模板
      *
      * @param rsp
-     * @param userInfo
      * @throws ParameterException
      */
-    public void uploadTemplate(HttpServletResponse rsp, UserInfo userInfo) throws ParameterException {
+    public void uploadTemplate(HttpServletResponse rsp) throws ParameterException {
         // 实例化导出对象
         ExportExcel exportExcel = new ExportExcel();
         // 设定表头
@@ -456,14 +457,13 @@ public class FeeRecordProcessService {
     /**
      * 批量导入数据
      *
-     * @param userInfo
      * @param file
      * @return
      * @throws ParameterException
      */
-    public FeeRecordUpload upload(UserInfo userInfo, MultipartFile file) throws ParameterException {
+    public FeeRecordUpload upload(MultipartFile file) throws ParameterException {
         // 取得上传记录
-        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUploadExceptJson(userInfo.getId());
+        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUploadExceptJson(userId);
         // 如果正在导入
         if (null != upload && upload.getStatus() == Constants.UPLOAD_STATUS_DOING) {
             // 中断流程
@@ -479,11 +479,11 @@ public class FeeRecordProcessService {
         // 生成导入Excel数据
         List<Map<String, CellData>> excelDatas = ReadUtils.makeExcelCellDatas(file, headers);
         // 更新上传记录
-        upload = feeRecordUploadProcessService.makeFeeRecordUpload(upload, userInfo.getId(), excelDatas.size(), 0, null, Constants.UPLOAD_STATUS_DOING);
+        upload = feeRecordUploadProcessService.makeFeeRecordUpload(upload, userId, excelDatas.size(), 0, null, Constants.UPLOAD_STATUS_DOING);
         // 批量导入客户数据
-        List<Map<String, CellData>> errorDatas = uploadFeeRecords(userInfo, excelDatas);
+        List<Map<String, CellData>> errorDatas = uploadFeeRecords(excelDatas);
         // 更新上传记录
-        feeRecordUploadProcessService.makeFeeRecordUpload(upload, userInfo.getId(), excelDatas.size(), errorDatas.size(), JSONArray.toJSONStringWithDateFormat(errorDatas, Constants.yyyy_MM_dd_HH_mm_ss), null);
+        feeRecordUploadProcessService.makeFeeRecordUpload(upload, userId, excelDatas.size(), errorDatas.size(), JSONArray.toJSONStringWithDateFormat(errorDatas, Constants.yyyy_MM_dd_HH_mm_ss), null);
         // 清除记录
         upload.setErrorJson(CommonConstants.STR_BLANK);
         // 返回上传记录
@@ -493,19 +493,18 @@ public class FeeRecordProcessService {
     /**
      * 导入记录列表
      *
-     * @param userInfo
      * @param excelDatas
      * @return
      * @throws ParameterException
      */
-    private List<Map<String, CellData>> uploadFeeRecords(UserInfo userInfo, List<Map<String, CellData>> excelDatas) throws ParameterException {
+    private List<Map<String, CellData>> uploadFeeRecords(List<Map<String, CellData>> excelDatas) throws ParameterException {
         // 错误记录
         List<Map<String, CellData>> errorDatas = Lists.newArrayList();
         // 循环处理
         for (Map<String, CellData> cellDatas : excelDatas) {
             try {
                 // 上传单个客户
-                uploadFeeRecord(userInfo, cellDatas);
+                uploadFeeRecord(cellDatas);
             } catch (Exception e) {
                 logger.error("===批量导入记录===" + e.getMessage());
                 // 添加到错误列表中
@@ -519,11 +518,10 @@ public class FeeRecordProcessService {
     /**
      * 导入单条记录
      *
-     * @param userInfo
      * @param cellDatas
      * @throws ParameterException
      */
-    private void uploadFeeRecord(UserInfo userInfo, Map<String, CellData> cellDatas) throws ParameterException {
+    private void uploadFeeRecord(Map<String, CellData> cellDatas) throws ParameterException {
         // 转换数据
         Map<String, Object> datas = ExcelUtils.convCellDatas(cellDatas);
         // 转换对象
@@ -675,12 +673,11 @@ public class FeeRecordProcessService {
      * 错误记录
      *
      * @param rsp
-     * @param userInfo
      * @throws ParameterException
      */
-    public void uploadError(HttpServletResponse rsp, UserInfo userInfo) throws ParameterException {
+    public void uploadError(HttpServletResponse rsp) throws ParameterException {
         // 取得上传记录
-        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUpload(userInfo.getId());
+        FeeRecordUpload upload = feeRecordUploadProcessService.findFeeRecordUpload(userId);
         // 异常处理
         if (null == upload) {
             // 中断流程

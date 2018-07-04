@@ -93,28 +93,20 @@ public class FeeRecordController extends BaseController {
 
     @RequestMapping(value = "/upload/template", method = RequestMethod.POST)
     public void uploadTemplate(HttpServletResponse rsp) throws ParameterException, SessionException {
-        // 取得Session用户
-        UserInfo userInfo = sessionService.getUserInfo();
         // 初始化模块
-        feeRecordProcessService.uploadTemplate(rsp, userInfo);
+        feeRecordProcessService.uploadTemplate(rsp);
     }
 
     @ResponseBody
     @RequestMapping(value = "/upload/excel", method = RequestMethod.POST)
     public Response uploadExcel(@RequestParam("file") MultipartFile file) throws ParameterException, SessionException {
-        // 取得Session用户
-        UserInfo userInfo = sessionService.getUserInfo();
         // 导入数据
-        feeRecordProcessService.upload(userInfo, file);
-        // 返回数据
-        return Response.success();
+        return Response.success(feeRecordProcessService.upload(file));
     }
 
     @RequestMapping(value = "/upload/error", method = RequestMethod.POST)
     public void uploadError(HttpServletResponse rsp) throws ParameterException, SessionException {
-        // 取得Session用户
-        UserInfo userInfo = sessionService.getUserInfo();
         // 初始化模块
-        feeRecordProcessService.uploadError(rsp, userInfo);
+        feeRecordProcessService.uploadError(rsp);
     }
 }
