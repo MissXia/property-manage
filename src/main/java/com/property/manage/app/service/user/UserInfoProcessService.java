@@ -8,6 +8,7 @@ import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Response;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
+import com.property.manage.base.model.utils.MD5Utils;
 import com.property.manage.base.service.MiniProgramService;
 import com.property.manage.base.session.SessionService;
 import com.property.manage.common.enums.UserTypes;
@@ -132,6 +133,35 @@ public class UserInfoProcessService {
         // 更新数据
         userInfoService.updateUserInfoByKey(info);
     }
+
+    /**
+     * 设定用户密码
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void password(UserInfo userInfo, UserPasswordParams params) throws ParameterException {
+        // 取得用户信息
+        UserInfo info = userInfoService.getUserInfoByKey(userInfo.getId());
+        // 异常处理
+        if (null == info) {
+            // 中断流程
+            throw new ParameterException("用户信息不存在!");
+        }
+        // 异常处理
+        if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
+            // 异常处理
+            throw new ParameterException("不是员工账号的手机号码,不能设定密码");
+        }
+        // 设定密码
+        info.setPassword(MD5Utils.md5(params.getPassword()));
+        // 更新时间
+        info.setUpdTime(new Date());
+        // 更新数据
+        userInfoService.updateUserInfoByKey(info);
+    }
+
 
     /**
      * 设定单元编号
@@ -292,6 +322,46 @@ public class UserInfoProcessService {
         // 更新用户
         userInfoService.updateUserInfoByKey(userInfo);
         // 返回用户数据
+        return userInfo;
+    }
+
+    /**
+     * PC端登录
+     *
+     * @param params
+     * @return
+     * @throws ParameterException
+     */
+    public UserInfo pcLogin(UserPcLoginParams params) throws ParameterException {
+        // 参数校验
+        CheckUtils.StringNotBlank(params.getPhoneNumber(), "手机号码", null);
+        // 参数校验
+        CheckUtils.StringNotBlank(params.getPassword(), "密码", null);
+        // 取得DB中的UserInfo
+        UserInfo userInfo = findUserInfoByPhoneNumber(params.getPhoneNumber());
+        // 如果DB中没有数据
+        if (null == userInfo) {
+            // 异常处理
+            throw new ParameterException("该手机号还未绑定账号");
+        }
+        // 异常处理
+        if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
+            // 异常处理
+            throw new ParameterException("不是员工账号的手机号码,不能登录");
+        }
+        // 异常处理
+        if (StringUtils.isBlank(userInfo.getPassword())) {
+            // 异常处理
+            throw new ParameterException("请先去小程序设定登录密码");
+        }
+        // 取得MD5值
+        String md5 = MD5Utils.md5(params.getPassword());
+        // 如果密码不匹配
+        if (!userInfo.getPassword().equals(md5)) {
+            // 异常处理
+            throw new ParameterException("密码不正确");
+        }
+        // 返回用户信息
         return userInfo;
     }
 }

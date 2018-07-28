@@ -45,6 +45,17 @@ public class UserController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    public Response password(@RequestBody UserPasswordParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 审核用户
+        userInfoProcessService.password(userInfo, params);
+        // 返回数据
+        return Response.success();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/unit/number", method = RequestMethod.POST)
     public Response unitNumber(@RequestBody UserUnitParams params) throws ParameterException, SessionException {
         // 取得Session中的用户
@@ -78,6 +89,21 @@ public class UserController extends BaseController {
     public Response login(HttpServletRequest request, @RequestBody UserLoginParams params) throws ParameterException {
         // 登录操作
         UserInfo info = userInfoProcessService.login(params);
+        // 取得SessionId
+        info.setSessionId(request.getSession().getId());
+        // 清空用户Session
+        sessionService.deleteUserInfo();
+        // 设定用户Session
+        sessionService.setUserInfo(info);
+        // 返回数据
+        return Response.success(info);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pc/login", method = RequestMethod.POST)
+    public Response login(HttpServletRequest request, @RequestBody UserPcLoginParams params) throws ParameterException {
+        // 登录操作
+        UserInfo info = userInfoProcessService.pcLogin(params);
         // 取得SessionId
         info.setSessionId(request.getSession().getId());
         // 清空用户Session

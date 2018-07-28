@@ -299,7 +299,7 @@ public class FeeRecordProcessService {
             // 循环处理
             for (FeeRecord record : records) {
                 // 如果不是同一条数据
-                if (record.getId().equals(feeRecord.getId())) {
+                if (!record.getId().equals(feeRecord.getId())) {
                     // 中断流程
                     throw new ParameterException("用户单元编号[" + userInfo.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
                 }
@@ -703,5 +703,16 @@ public class FeeRecordProcessService {
         exportExcel.setHeader(headers);
         // 下载Excel
         exportExcel.downloadExcel("收费记录错误数据", datas, rsp);
+    }
+
+    /**
+     * 上次导入记录
+     *
+     * @return
+     * @throws ParameterException
+     */
+    public FeeRecordUpload uploadRecord() throws ParameterException {
+        // 返回上传记录
+        return feeRecordUploadProcessService.findFeeRecordUploadExceptJson(userId);
     }
 }

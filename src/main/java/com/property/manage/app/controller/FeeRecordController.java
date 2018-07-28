@@ -109,4 +109,11 @@ public class FeeRecordController extends BaseController {
         // 初始化模块
         feeRecordProcessService.uploadError(rsp);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/upload/record", method = RequestMethod.POST)
+    public Response uploadRecord() throws ParameterException, SessionException {
+        // 导入数据
+        return Response.success(feeRecordProcessService.uploadRecord());
+    }
 }
