@@ -1,0 +1,22 @@
+# 公共配置
+spring:
+  # 打包配置文件
+  profiles:
+    active: @activatedProperties@
+  session:
+    store-type: none
+    timeout: 3600
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+
+# mybatis
+mybatis:
+  config-location:  classpath:config/mybatis-config.xml
+  mapper-locations: classpath:mappers/*.xml

@@ -1,0 +1,15 @@
+# 数据库配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://gz-cdb-3t8ep45x.sql.tencentcdb.com:62264/property_manage?useUnicode=true&amp;characterEncoding=UTF-8
+    username: root
+    password:
+
+# 日志
+logging:
+  path: .
+
+server:
+  port: 8082
