@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://gz-cdb-3t8ep45x.sql.tencentcdb.com:62264/property_manage?useUnicode=true&amp;characterEncoding=UTF-8
     username: root
-    password:
+    password: GgtBXsBnL5UH
 
 # 日志
 logging:
