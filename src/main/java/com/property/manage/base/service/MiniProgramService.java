@@ -24,12 +24,12 @@ public class MiniProgramService {
     /**
      * AppID(小程序ID)
      */
-    private final static String appId = "wx44e43ba8611728f3";
+    private final static String appId = "wx110d933c5300dfad";
 
     /**
      * AppSecret(小程序密钥)
      */
-    private final static String appSecret = "91deb1bcc588a88908e0694a1db03b04";
+    private final static String appSecret = "3cb108d85e1e8a38dd1106fbf027b318";
 
     /**
      * 错误代码
