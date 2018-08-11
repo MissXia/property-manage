@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.nio.charset.Charset;
 import java.util.List;
 
-
 @Configuration
 public class WebConfigurer extends WebMvcConfigurationSupport {
 

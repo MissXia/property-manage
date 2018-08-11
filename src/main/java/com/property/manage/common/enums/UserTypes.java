@@ -3,6 +3,8 @@ package com.property.manage.common.enums;
 
 public enum UserTypes {
 
+    FAILD(-1, "认证失败"),
+
     UNKNOW(0, "未知"),
 
     NORMAL(1, "普通用户"),

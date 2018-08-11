@@ -7,6 +7,7 @@ import com.property.manage.base.constants.MiniConstants;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Response;
 import com.property.manage.base.model.model.Result;
+import com.property.manage.base.model.utils.CastUtils;
 import com.property.manage.base.model.utils.CheckUtils;
 import com.property.manage.base.model.utils.MD5Utils;
 import com.property.manage.base.service.MiniProgramService;
@@ -142,13 +143,15 @@ public class UserInfoProcessService {
      * @throws ParameterException
      */
     public void password(UserInfo userInfo, UserPasswordParams params) throws ParameterException {
+        logger.info("==设定用户密码==参数{}", CastUtils.castJsonString(params));
         // 取得用户信息
-        UserInfo info = userInfoService.getUserInfoByKey(userInfo.getId());
+        UserInfo info = userInfoService.getUserInfoByKey(params.getUserId());
         // 异常处理
         if (null == info) {
             // 中断流程
             throw new ParameterException("用户信息不存在!");
         }
+        logger.info("==设定用户密码==用户{}", CastUtils.castJsonString(userInfo));
         // 异常处理
         if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
             // 异常处理
@@ -156,12 +159,13 @@ public class UserInfoProcessService {
         }
         // 设定密码
         info.setPassword(MD5Utils.md5(params.getPassword()));
+        logger.info("==设定用户密码==密码{}", info.getPassword());
         // 更新时间
         info.setUpdTime(new Date());
         // 更新数据
         userInfoService.updateUserInfoByKey(info);
+        logger.info("==设定用户密码==完成");
     }
-
 
     /**
      * 设定单元编号
@@ -290,12 +294,37 @@ public class UserInfoProcessService {
         CheckUtils.StringNotBlank(info.getSessionKey(), "用户sessionKey", null);
         // 取得DB中的UserInfo
         UserInfo userInfo = userInfoService.getUserInfoByOpenId(info.getOpenId());
+        // 当前时间
+        Date now = new Date();
         // 如果DB中没有数据
         if (null == userInfo) {
+            // 参数校验
+            CheckUtils.StringNotBlank(info.getPhoneNumber(), "手机号码", null);
+            // 参数校验
+            CheckUtils.StringNotBlank(info.getUnitNumber(), "单元编号", null);
             // 生成用户信息数据,默认都是未知类型,待审核
             userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), info.getOpenId(), info.getSessionKey(), info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
             // 新增数据
             userInfoService.addUserInfo(userInfo);
+            // 返回用户数据
+            return userInfo;
+        }
+        // 认证失败的情况下
+        if (UserTypes.FAILD.getKey().equals(userInfo.getUserType())) {
+            // 参数校验
+            CheckUtils.StringNotBlank(info.getPhoneNumber(), "手机号码", null);
+            // 参数校验
+            CheckUtils.StringNotBlank(info.getUnitNumber(), "单元编号", null);
+            // 手机号码
+            userInfo.setPhoneNumber(info.getPhoneNumber());
+            // 单元编号
+            userInfo.setUnitNumber(info.getUnitNumber());
+            // 用户类型=未知
+            userInfo.setUserType(UserTypes.UNKNOW.getKey());
+            // 修改时间
+            userInfo.setUpdTime(now);
+            // 更新用户
+            userInfoService.updateUserInfoByKey(userInfo);
             // 返回用户数据
             return userInfo;
         }
@@ -318,7 +347,7 @@ public class UserInfoProcessService {
         // 用户的语言，简体中文为zh_CN
         userInfo.setLanguage(info.getLanguage());
         // 修改时间
-        userInfo.setUpdTime(new Date());
+        userInfo.setUpdTime(now);
         // 更新用户
         userInfoService.updateUserInfoByKey(userInfo);
         // 返回用户数据
@@ -333,6 +362,7 @@ public class UserInfoProcessService {
      * @throws ParameterException
      */
     public UserInfo pcLogin(UserPcLoginParams params) throws ParameterException {
+        logger.info("==PC端登录==参数{}", CastUtils.castJsonString(params));
         // 参数校验
         CheckUtils.StringNotBlank(params.getPhoneNumber(), "手机号码", null);
         // 参数校验
@@ -344,6 +374,7 @@ public class UserInfoProcessService {
             // 异常处理
             throw new ParameterException("该手机号还未绑定账号");
         }
+        logger.info("==PC端登录==用户{}", CastUtils.castJsonString(userInfo));
         // 异常处理
         if (userInfo.getUserType() <= UserTypes.OPEARTOR.getKey()) {
             // 异常处理
@@ -356,6 +387,7 @@ public class UserInfoProcessService {
         }
         // 取得MD5值
         String md5 = MD5Utils.md5(params.getPassword());
+        logger.info("==PC端登录==校验密码{}", md5);
         // 如果密码不匹配
         if (!userInfo.getPassword().equals(md5)) {
             // 异常处理

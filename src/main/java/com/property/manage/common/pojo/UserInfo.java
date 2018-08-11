@@ -10,7 +10,7 @@ import java.util.Date;
  * @author 管辉俊
  * @date 2018-05-22
  */
-@JsonIgnoreProperties({"sessionKey", "password"})
+@JsonIgnoreProperties({"sessionKey"})
 public class UserInfo extends BasePojo {
 
     /**
@@ -49,7 +49,7 @@ public class UserInfo extends BasePojo {
     private String password;
 
     /**
-     * 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * 用户类型：-1、认证失败 0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
      */
     private Integer userType;
 
