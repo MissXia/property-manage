@@ -34,6 +34,17 @@ public class UserController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public Response edit(@RequestBody UserEditParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 审核用户
+        userInfoProcessService.editUser(userInfo, params);
+        // 返回数据
+        return Response.success();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/phone/number", method = RequestMethod.POST)
     public Response phoneNumber(@RequestBody UserPhoneParams params) throws ParameterException, SessionException {
         // 取得Session中的用户

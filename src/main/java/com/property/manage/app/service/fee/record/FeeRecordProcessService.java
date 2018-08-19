@@ -69,7 +69,7 @@ public class FeeRecordProcessService {
     private FeeRecordUploadProcessService feeRecordUploadProcessService;
 
     // 表头数组
-    public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "手机号码:phoneNumber", "应收金额:planPayFee"};
+    public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "单元编号:unitNumber", "应收金额:planPayFee"};
 
     private final static Long userId = 0L;
 
@@ -623,6 +623,16 @@ public class FeeRecordProcessService {
             // 错误信息
             ExcelUtils.makeCellDataError(cellDatas, "planPayFee", "应收金额必须输入");
         }
+        // 异常判断
+        if (StringUtils.isBlank(io.getUnitNumber())) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "unitNumber", "单元编号必须输入");
+        }
+        // 异常判断
+        if (StringUtils.isBlank(io.getItemName())) {
+            // 错误信息
+            ExcelUtils.makeCellDataError(cellDatas, "itemName", "收费项目必须输入");
+        }
     }
 
     /**
@@ -657,13 +667,13 @@ public class FeeRecordProcessService {
      */
     private UserInfo userInfoCheck(FeeRecordIO io, Map<String, CellData> cellDatas) throws ParameterException {
         // 查找用户
-        UserInfo info = userInfoProcessService.findUserInfoByPhoneNumber(io.getPhoneNumber());
+        UserInfo info = userInfoProcessService.findUserInfoByUnitNumber(null, io.getUnitNumber());
         // 如果没有查找到跟进人名称
         if (null == info) {
             // 错误信息
-            ExcelUtils.makeCellDataError(cellDatas, "phoneNumber", "手机号码对应的用户不存在");
+            ExcelUtils.makeCellDataError(cellDatas, "unitNumber", "单元编号对应的用户不存在");
             // 抛出异常
-            throw new ParameterException("手机号码对应的用户不存在");
+            throw new ParameterException("单元编号对应的用户不存在");
         }
         // 返回对象
         return info;

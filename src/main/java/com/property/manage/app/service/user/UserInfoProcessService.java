@@ -1,6 +1,7 @@
 package com.property.manage.app.service.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.property.manage.app.model.po.user.*;
 import com.property.manage.base.constants.MiniConstants;
@@ -85,7 +86,7 @@ public class UserInfoProcessService {
      * @param phoneNumber
      * @return
      */
-    public UserInfo findUserInfoByPhoneNumber(String phoneNumber) {
+    public UserInfo findUserInfoByPhoneNumber(Long exceptUserId, String phoneNumber) {
         // 查询参数
         UserInfoQuery query = new UserInfoQuery();
         // 手机号码
@@ -96,6 +97,8 @@ public class UserInfoProcessService {
         query.setPageSize(1);
         // 查询列表
         List<UserInfo> infos = userInfoService.getUserInfoList(query);
+        // 根据ID过滤列表
+        infos = filterExceptUserId(exceptUserId, infos);
         // 异常处理
         if (CollectionUtils.isEmpty(infos)) {
             // 中断流程
@@ -103,6 +106,61 @@ public class UserInfoProcessService {
         }
         // 返回数据
         return infos.get(0);
+    }
+
+    /**
+     * 按单元编号查找用户
+     *
+     * @param unitNumber
+     * @return
+     */
+    public UserInfo findUserInfoByUnitNumber(Long exceptUserId, String unitNumber) {
+        // 查询参数
+        UserInfoQuery query = new UserInfoQuery();
+        // 单元编号
+        query.setUnitNumber(unitNumber);
+        // 页码
+        query.setPage(1);
+        // 显示条数
+        query.setPageSize(1);
+        // 查询列表
+        List<UserInfo> infos = userInfoService.getUserInfoList(query);
+        // 根据ID过滤列表
+        infos = filterExceptUserId(exceptUserId, infos);
+        // 异常处理
+        if (CollectionUtils.isEmpty(infos)) {
+            // 中断流程
+            return null;
+        }
+        // 返回数据
+        return infos.get(0);
+    }
+
+    /**
+     * 根据ID过滤列表
+     *
+     * @param exceptUserId
+     * @param infos
+     * @return
+     */
+    public List<UserInfo> filterExceptUserId(Long exceptUserId, List<UserInfo> infos) {
+        // 如果不存在排除ID
+        if (null == exceptUserId || CollectionUtils.isEmpty(infos)) {
+            // 返回列表
+            return infos;
+        }
+        // 过滤后的列表
+        List<UserInfo> filters = Lists.newArrayList();
+        // 循环处理
+        for (UserInfo info : infos) {
+            // 如果ID不匹配
+            if (!exceptUserId.equals(info.getId())) {
+                // 添加元素
+                filters.add(info);
+            }
+        }
+        // 返回过滤后的列表
+        return filters;
     }
 
     /**
@@ -121,7 +179,7 @@ public class UserInfoProcessService {
             throw new ParameterException("用户信息不存在!");
         }
         // 按手机号码查找用户
-        UserInfo phoneInfo = findUserInfoByPhoneNumber(params.getPhoneNumber());
+        UserInfo phoneInfo = findUserInfoByPhoneNumber(params.getUserId(), params.getPhoneNumber());
         // 如果存在
         if (null != phoneInfo) {
             // 中断流程
@@ -187,7 +245,58 @@ public class UserInfoProcessService {
             // 中断流程
             throw new ParameterException("用户信息不存在!");
         }
+        // 按手机号码查找用户
+        UserInfo unitInfo = findUserInfoByUnitNumber(params.getUserId(), params.getUnitNumber());
+        // 如果存在
+        if (null != unitInfo) {
+            // 中断流程
+            throw new ParameterException("该单元编号已经有人绑定!");
+        }
         // 设定为用户类型
+        info.setUnitNumber(params.getUnitNumber());
+        // 更新时间
+        info.setUpdTime(new Date());
+        // 更新数据
+        userInfoService.updateUserInfoByKey(info);
+    }
+
+    /**
+     * 编辑用户信息
+     *
+     * @param userInfo
+     * @param params
+     * @throws ParameterException
+     */
+    public void editUser(UserInfo userInfo, UserEditParams params) throws ParameterException {
+        // 如果权限小于超级管理员
+        if (userInfo.getUserType() < UserTypes.SUPER_ADMIN.getKey()) {
+            // 中断流程
+            throw new ParameterException("您无权进行此操作!");
+        }
+        // 取得用户信息
+        UserInfo info = userInfoService.getUserInfoByKey(params.getUserId());
+        // 异常处理
+        if (null == info) {
+            // 中断流程
+            throw new ParameterException("用户信息不存在!");
+        }
+        // 按手机号码查找用户
+        UserInfo unitInfo = findUserInfoByUnitNumber(params.getUserId(), params.getUnitNumber());
+        // 如果存在
+        if (null != unitInfo) {
+            // 中断流程
+            throw new ParameterException("该单元编号已经有人绑定!");
+        }
+        // 按手机号码查找用户
+        UserInfo phoneInfo = findUserInfoByPhoneNumber(params.getUserId(), params.getPhoneNumber());
+        // 如果存在
+        if (null != phoneInfo) {
+            // 中断流程
+            throw new ParameterException("该手机号码已经有人使用!");
+        }
+        // 设定手机号码
+        info.setPhoneNumber(params.getPhoneNumber());
+        // 设定单元编号
         info.setUnitNumber(params.getUnitNumber());
         // 更新时间
         info.setUpdTime(new Date());
@@ -302,6 +411,20 @@ public class UserInfoProcessService {
             CheckUtils.StringNotBlank(info.getPhoneNumber(), "手机号码", null);
             // 参数校验
             CheckUtils.StringNotBlank(info.getUnitNumber(), "单元编号", null);
+            // 根据单元编号取得用户信息
+            UserInfo unitNumber = findUserInfoByUnitNumber(null, info.getUnitNumber());
+            // 异常判断
+            if (null != unitNumber) {
+                // 中断流程
+                throw new ParameterException("该单元编号已经被占用!");
+            }
+            // 根据手机号码取得用户信息
+            UserInfo phoneNumber = findUserInfoByPhoneNumber(null, info.getPhoneNumber());
+            // 异常判断
+            if (null != phoneNumber) {
+                // 中断流程
+                throw new ParameterException("该手机号码已经被使用!");
+            }
             // 生成用户信息数据,默认都是未知类型,待审核
             userInfo = UserInfoUtils.generateUserInfo(null, info.getNickName(), null, null, UserTypes.UNKNOW.getKey(), info.getAvatarUrl(), info.getGender(), info.getOpenId(), info.getSessionKey(), info.getCity(), info.getProvince(), info.getCountry(), info.getLanguage());
             // 新增数据
@@ -315,6 +438,20 @@ public class UserInfoProcessService {
             CheckUtils.StringNotBlank(info.getPhoneNumber(), "手机号码", null);
             // 参数校验
             CheckUtils.StringNotBlank(info.getUnitNumber(), "单元编号", null);
+            // 根据单元编号取得用户信息
+            UserInfo unitNumber = findUserInfoByUnitNumber(userInfo.getId(), info.getUnitNumber());
+            // 异常判断
+            if (null != unitNumber) {
+                // 中断流程
+                throw new ParameterException("该单元编号已经被占用!");
+            }
+            // 根据手机号码取得用户信息
+            UserInfo phoneNumber = findUserInfoByPhoneNumber(userInfo.getId(), info.getPhoneNumber());
+            // 异常判断
+            if (null != phoneNumber) {
+                // 中断流程
+                throw new ParameterException("该手机号码已经被使用!");
+            }
             // 手机号码
             userInfo.setPhoneNumber(info.getPhoneNumber());
             // 单元编号
@@ -368,7 +505,7 @@ public class UserInfoProcessService {
         // 参数校验
         CheckUtils.StringNotBlank(params.getPassword(), "密码", null);
         // 取得DB中的UserInfo
-        UserInfo userInfo = findUserInfoByPhoneNumber(params.getPhoneNumber());
+        UserInfo userInfo = findUserInfoByPhoneNumber(null, params.getPhoneNumber());
         // 如果DB中没有数据
         if (null == userInfo) {
             // 异常处理

@@ -24,9 +24,9 @@ public class FeeRecordIO {
     private String itemName;
 
     /**
-     * 手机号码
+     * 单元编号
      */
-    private String phoneNumber;
+    private String unitNumber;
 
     public String getTheMonth() {
         return theMonth;
@@ -52,11 +52,11 @@ public class FeeRecordIO {
         this.itemName = itemName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getUnitNumber() {
+        return unitNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 }
