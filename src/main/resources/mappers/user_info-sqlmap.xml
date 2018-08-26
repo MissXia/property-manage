@@ -20,6 +20,27 @@
         <result property="updTime" column="upd_time"/>
     </resultMap>
 
+    <resultMap id="userInfoView" type="com.property.manage.common.pojo.UserInfoView">
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="password" column="password"/>
+        <result property="userType" column="user_type"/>
+        <result property="avatarUrl" column="avatar_url"/>
+        <result property="gender" column="gender"/>
+        <result property="openId" column="open_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="city" column="city"/>
+        <result property="province" column="province"/>
+        <result property="country" column="country"/>
+        <result property="language" column="language"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updTime" column="upd_time"/>
+        <result property="companyName" column="company_name"/>
+        <result property="unitNumber" column="unit_number"/>
+    </resultMap>
+
     <sql id="table_name">user_info</sql>
 
     <sql id="table_name_view">user_info_view</sql>
@@ -300,7 +321,7 @@
     </select>
 
     <!-- 分页 -->
-    <select id="getUserInfoViewListWithPage" parameterType="hashMap" resultMap="feeRecordView">
+    <select id="getUserInfoViewListWithPage" parameterType="hashMap" resultMap="userInfoView">
         <include refid="base_select_view"/>
         <include refid="where_view"/>
         <include refid="order_view"/>
@@ -311,7 +332,7 @@
         <include refid="table_name_view"/>
         <include refid="where_view"/>
     </select>
-    <select id="getUserInfoViewList" parameterType="hashMap" resultMap="feeRecordView">
+    <select id="getUserInfoViewList" parameterType="hashMap" resultMap="userInfoView">
         <include refid="base_select_view"/>
         <include refid="where_view"/>
         <include refid="order_view"/>
