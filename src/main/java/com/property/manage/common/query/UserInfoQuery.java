@@ -29,17 +29,17 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
-     * 单元编号
+     * 企业ID
      **/
-    private String unitNumber;
+    private Long companyId;
 
-    public String getUnitNumber() {
-        return unitNumber;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public UserInfoQuery setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
-        this.params.put("unitNumber", unitNumber);
+    public UserInfoQuery setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        this.params.put("companyId", companyId);
         return this;
     }
 
@@ -297,22 +297,22 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
+     * 设置排序按属性：企业ID
+     *
+     * @param isAsc 是否升序，否则为降序
+     */
+    public UserInfoQuery orderbyCompanyId(boolean isAsc) {
+        orderFields.add(new OrderField("company_id", isAsc ? SortDirection.ASC : SortDirection.DESC));
+        return this;
+    }
+
+    /**
      * 设置排序按属性：用户昵称
      *
      * @param isAsc 是否升序，否则为降序
      */
     public UserInfoQuery orderbyNickName(boolean isAsc) {
         orderFields.add(new OrderField("nick_name", isAsc ? SortDirection.ASC : SortDirection.DESC));
-        return this;
-    }
-
-    /**
-     * 设置排序按属性：单元编号
-     *
-     * @param isAsc 是否升序，否则为降序
-     */
-    public UserInfoQuery orderbyUnitNumber(boolean isAsc) {
-        orderFields.add(new OrderField("unit_number", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
@@ -440,8 +440,8 @@ public class UserInfoQuery extends BaseQuery {
     public Map<String, String> getFieldSet() {
         super.getFieldSet();
         fieldMap.put("id", "id");
+        fieldMap.put("company_id", "companyId");
         fieldMap.put("nick_name", "nickName");
-        fieldMap.put("unit_number", "unitNumber");
         fieldMap.put("phone_number", "phoneNumber");
         fieldMap.put("user_type", "userType");
         fieldMap.put("avatar_url", "avatarUrl");

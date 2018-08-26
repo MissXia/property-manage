@@ -13,19 +13,14 @@ public class FeeRecordListParams extends BaseParams {
     private String itemName;
 
     /**
-     * 用户昵称
+     * 企业昵称
      */
-    private String nickName;
+    private String companyName;
 
     /**
      * 单元编号
      */
     private String unitNumber;
-
-    /**
-     * 手机号码
-     */
-    private String phoneNumber;
 
     /**
      * 所属月份
@@ -65,12 +60,12 @@ public class FeeRecordListParams extends BaseParams {
         this.itemName = itemName;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getUnitNumber() {
@@ -79,14 +74,6 @@ public class FeeRecordListParams extends BaseParams {
 
     public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getTheMonth() {

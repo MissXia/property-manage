@@ -3,7 +3,7 @@
 
     <resultMap id="feeRecord" type="com.property.manage.common.pojo.FeeRecord">
         <result property="id" column="id"/>
-        <result property="userId" column="user_id"/>
+        <result property="companyId" column="company_id"/>
         <result property="itemId" column="item_id"/>
         <result property="theMonth" column="the_month"/>
         <result property="planPayFee" column="plan_pay_fee"/>
@@ -18,7 +18,7 @@
 
     <resultMap id="feeRecordView" type="com.property.manage.common.pojo.FeeRecordView">
         <result property="id" column="id"/>
-        <result property="userId" column="user_id"/>
+        <result property="companyId" column="company_id"/>
         <result property="itemId" column="item_id"/>
         <result property="theMonth" column="the_month"/>
         <result property="planPayFee" column="plan_pay_fee"/>
@@ -30,20 +30,17 @@
         <result property="addTime" column="add_time"/>
         <result property="updTime" column="upd_time"/>
         <result property="itemName" column="item_name"/>
-        <result property="nickName" column="nick_name"/>
+        <result property="companyName" column="company_name"/>
         <result property="unitNumber" column="unit_number"/>
-        <result property="phoneNumber" column="phone_number"/>
-        <result property="userType" column="user_type"/>
-        <result property="avatarUrl" column="avatar_url"/>
     </resultMap>
 
     <sql id="table_name">fee_record</sql>
 
     <sql id="table_name_view">fee_record_view</sql>
 
-    <sql id="base_col">id,user_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time</sql>
+    <sql id="base_col">id,company_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time</sql>
 
-    <sql id="base_col_view">id,user_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time,item_name,nick_name,unit_number,phone_number,user_type,avatar_url</sql>
+    <sql id="base_col_view">id,company_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time,item_name,company_name,unit_number</sql>
 
     <sql id="base_select">
         SELECT
@@ -69,8 +66,8 @@
                     #{item}
                 </foreach>
             </if>
-            <if test="userId != null">
-                AND user_id=#{userId}
+            <if test="companyId != null">
+                AND company_id=#{companyId}
             </if>
             <if test="itemId != null">
                 AND item_id=#{itemId}
@@ -121,8 +118,8 @@
                     #{item}
                 </foreach>
             </if>
-            <if test="userId != null">
-                AND user_id=#{userId}
+            <if test="companyId != null">
+                AND company_id=#{companyId}
             </if>
             <if test="itemId != null">
                 AND item_id=#{itemId}
@@ -163,17 +160,11 @@
             <if test="itemName != null">
                 AND item_name=#{itemName}
             </if>
-            <if test="nickName != null">
-                AND nick_name=#{nickName}
+            <if test="companyName != null">
+                AND company_name=#{companyName}
             </if>
             <if test="unitNumber != null">
                 AND unit_number=#{unitNumber}
-            </if>
-            <if test="phoneNumber != null">
-                AND phone_number=#{phoneNumber}
-            </if>
-            <if test="userType != null">
-                AND user_type=#{userType}
             </if>
         </where>
     </sql>
@@ -183,7 +174,7 @@
             <trim prefix=" ORDER BY ">
                 <foreach collection="orderFields" item="item" separator="," close="" open="">
                     <if test="item != null and item.fieldName == 'id'.toString()">id</if>
-                    <if test="item != null and item.fieldName == 'user_id'.toString()">user_id</if>
+                    <if test="item != null and item.fieldName == 'company_id'.toString()">company_id</if>
                     <if test="item != null and item.fieldName == 'item_id'.toString()">item_id</if>
                     <if test="item != null and item.fieldName == 'the_month'.toString()">the_month</if>
                     <if test="item != null and item.fieldName == 'plan_pay_fee'.toString()">plan_pay_fee</if>
@@ -208,7 +199,7 @@
             <trim prefix=" ORDER BY ">
                 <foreach collection="orderFields" item="item" separator="," close="" open="">
                     <if test="item != null and item.fieldName == 'id'.toString()">id</if>
-                    <if test="item != null and item.fieldName == 'user_id'.toString()">user_id</if>
+                    <if test="item != null and item.fieldName == 'company_id'.toString()">company_id</if>
                     <if test="item != null and item.fieldName == 'item_id'.toString()">item_id</if>
                     <if test="item != null and item.fieldName == 'the_month'.toString()">the_month</if>
                     <if test="item != null and item.fieldName == 'plan_pay_fee'.toString()">plan_pay_fee</if>
@@ -220,10 +211,8 @@
                     <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
                     <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
                     <if test="item != null and item.fieldName == 'item_name'.toString()">item_name</if>
-                    <if test="item != null and item.fieldName == 'nick_name'.toString()">nick_name</if>
+                    <if test="item != null and item.fieldName == 'company_name'.toString()">company_name</if>
                     <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
-                    <if test="item != null and item.fieldName == 'phone_number'.toString()">phone_number</if>
-                    <if test="item != null and item.fieldName == 'user_type'.toString()">user_type</if>
                     <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
                     <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
                     <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
@@ -259,8 +248,8 @@
             <if test="id != null ">,
                 id = #{id}
             </if>
-            <if test="userId != null ">,
-                user_id = #{userId}
+            <if test="companyId != null ">,
+                company_id = #{companyId}
             </if>
             <if test="itemId != null ">,
                 item_id = #{itemId}
@@ -332,8 +321,8 @@
             <if test="id != null ">,
                 id
             </if>
-            <if test="userId != null ">,
-                user_id
+            <if test="companyId != null ">,
+                company_id
             </if>
             <if test="itemId != null ">,
                 item_id
@@ -367,8 +356,8 @@
             <if test="id != null">,
                 #{id}
             </if>
-            <if test="userId != null">,
-                #{userId}
+            <if test="companyId != null">,
+                #{companyId}
             </if>
             <if test="itemId != null">,
                 #{itemId}

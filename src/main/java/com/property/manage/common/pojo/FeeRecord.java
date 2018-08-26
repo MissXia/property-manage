@@ -22,9 +22,9 @@ public class FeeRecord extends BasePojo {
     private Long id;
 
     /**
-     * 用户ID
+     * 企业ID
      */
-    private Long userId;
+    private Long companyId;
 
     /**
      * 收费项目ID
@@ -90,18 +90,12 @@ public class FeeRecord extends BasePojo {
         this.id = id;
     }
 
-    /**
-     * @return userId 用户ID
-     */
-    public Long getUserId() {
-        return userId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    /**
-     * @param userId 用户ID
-     */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     /**

@@ -1,24 +1,13 @@
-package com.property.manage.common.pojo;
+package com.property.manage.app.model.po.lessee.company;
 
-/**
- * @author 管辉俊
- * @date 2018-06-10
- */
-public class FeeRecordView extends FeeRecord {
 
-    private String itemName;
+import com.property.manage.base.model.model.BaseParams;
+
+public class LesseeCompanyAddParams extends BaseParams {
 
     private String companyName;
 
     private String unitNumber;
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
 
     public String getCompanyName() {
         return companyName;

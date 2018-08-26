@@ -153,7 +153,7 @@ public class FeeItemProcessService {
             // 循环处理
             for (FeeItem item : items) {
                 // 如果不是同一条数据
-                if (item.getId().equals(feeItem.getId())) {
+                if (!item.getId().equals(feeItem.getId())) {
                     // 中断流程
                     throw new ParameterException("收费项目名称重复");
                 }

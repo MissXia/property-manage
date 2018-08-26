@@ -23,15 +23,15 @@ public class FeeRecordViewQuery extends FeeRecordQuery {
         return this;
     }
 
-    private String nickName;
+    private String companyName;
 
-    public String getNickName() {
-        return nickName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public FeeRecordViewQuery setNickName(String nickName) {
-        this.nickName = nickName;
-        this.params.put("nickName", nickName);
+    public FeeRecordViewQuery setCompanyName(String companyName) {
+        this.companyName = companyName;
+        this.params.put("companyName", companyName);
         return this;
     }
 
@@ -47,40 +47,15 @@ public class FeeRecordViewQuery extends FeeRecordQuery {
         return this;
     }
 
-    private String phoneNumber;
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public FeeRecordViewQuery setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        this.params.put("phoneNumber", phoneNumber);
-        return this;
-    }
-
-    private String userType;
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public FeeRecordViewQuery setUserType(String userType) {
-        this.userType = userType;
-        this.params.put("userType", userType);
-        return this;
-    }
-
     /**==============================批量查询时的Order条件顺序设置==================================**/
-
 
     public FeeRecordViewQuery orderbyItemName(boolean isAsc) {
         orderFields.add(new OrderField("item_name", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
-    public FeeRecordViewQuery orderbyNickName(boolean isAsc) {
-        orderFields.add(new OrderField("nick_name", isAsc ? SortDirection.ASC : SortDirection.DESC));
+    public FeeRecordViewQuery orderbyCompanyName(boolean isAsc) {
+        orderFields.add(new OrderField("company_name", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
@@ -89,36 +64,12 @@ public class FeeRecordViewQuery extends FeeRecordQuery {
         return this;
     }
 
-    public FeeRecordViewQuery orderbyPhoneNumber(boolean isAsc) {
-        orderFields.add(new OrderField("phone_number", isAsc ? SortDirection.ASC : SortDirection.DESC));
-        return this;
-    }
-
-    public FeeRecordViewQuery orderbyUserType(boolean isAsc) {
-        orderFields.add(new OrderField("user_type", isAsc ? SortDirection.ASC : SortDirection.DESC));
-        return this;
-    }
-
     @Override
     public Map<String, String> getFieldSet() {
-        super.getFieldSet();
-        fieldMap.put("id", "id");
-        fieldMap.put("user_id", "userId");
-        fieldMap.put("item_id", "itemId");
-        fieldMap.put("the_month", "theMonth");
-        fieldMap.put("plan_pay_fee", "planPayFee");
-        fieldMap.put("real_pay_fee", "realPayFee");
-        fieldMap.put("pay_time", "payTime");
-        fieldMap.put("pay_status", "payStatus");
-        fieldMap.put("ticket_time", "ticketTime");
-        fieldMap.put("ticket_status", "ticketStatus");
-        fieldMap.put("add_time", "addTime");
-        fieldMap.put("upd_time", "updTime");
+        fieldMap = super.getFieldSet();
         fieldMap.put("item_name", "itemName");
-        fieldMap.put("nick_name", "nickName");
+        fieldMap.put("company_name", "companyName");
         fieldMap.put("unit_number", "unitNumber");
-        fieldMap.put("phone_number", "phoneNumber");
-        fieldMap.put("user_type", "userType");
         return fieldMap;
     }
 }

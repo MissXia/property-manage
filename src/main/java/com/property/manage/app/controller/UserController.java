@@ -67,12 +67,12 @@ public class UserController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/unit/number", method = RequestMethod.POST)
-    public Response unitNumber(@RequestBody UserUnitParams params) throws ParameterException, SessionException {
+    @RequestMapping(value = "/company", method = RequestMethod.POST)
+    public Response company(@RequestBody UserCompanyParams params) throws ParameterException, SessionException {
         // 取得Session中的用户
         UserInfo userInfo = sessionService.getUserInfo();
         // 审核用户
-        userInfoProcessService.unitNumber(userInfo, params);
+        userInfoProcessService.companyId(userInfo, params);
         // 返回数据
         return Response.success();
     }

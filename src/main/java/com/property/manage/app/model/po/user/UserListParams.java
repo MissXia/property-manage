@@ -18,8 +18,6 @@ public class UserListParams extends BaseParams {
 
     private String nickName;
 
-    private String unitNumber;
-
     private String phoneNumber;
 
     public Integer getUserType() {
@@ -36,14 +34,6 @@ public class UserListParams extends BaseParams {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
     }
 
     public String getPhoneNumber() {

@@ -29,14 +29,14 @@ public class UserInfo extends BasePojo {
     private Long id;
 
     /**
+     * 企业ID
+     */
+    private Long companyId;
+
+    /**
      * 用户昵称
      */
     private String nickName;
-
-    /**
-     * 单元编号
-     */
-    private String unitNumber;
 
     /**
      * 手机号码
@@ -125,6 +125,14 @@ public class UserInfo extends BasePojo {
         this.id = id;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
     /**
      * @return nickName 用户昵称
      */
@@ -137,14 +145,6 @@ public class UserInfo extends BasePojo {
      */
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
     }
 
     /**

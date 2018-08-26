@@ -5,14 +5,14 @@ public class UserEditParams extends UserOperateParams {
 
     private String phoneNumber;
 
-    private String unitNumber;
+    private Long companyId;
 
-    public String getUnitNumber() {
-        return unitNumber;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getPhoneNumber() {

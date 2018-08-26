@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LesseeCompany">
+
+    <resultMap id="lesseeCompany" type="com.property.manage.common.pojo.LesseeCompany">
+        <result property="id" column="id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="unitNumber" column="unit_number"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updTime" column="upd_time"/>
+    </resultMap>
+
+    <sql id="table_name">lessee_company</sql>
+
+    <sql id="base_col">id,company_name,unit_number,add_time,upd_time</sql>
+
+    <sql id="base_select">
+        SELECT
+        <include refid="base_col"/>
+        FROM
+        <include refid="table_name"/>
+    </sql>
+    <!-- Select SQL -->
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                AND id=#{id}
+            </if>
+            <if test="keys != null">
+                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="companyName != null">
+                AND company_name=#{companyName}
+            </if>
+            <if test="unitNumber != null">
+                AND unit_number=#{unitNumber}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order">
+        <if test="orderFields != null">
+            <trim prefix=" ORDER BY ">
+                <foreach collection="orderFields" item="item" separator="," close="" open="">
+                    <if test="item != null and item.fieldName == 'id'.toString()">id</if>
+                    <if test="item != null and item.fieldName == 'company_name'.toString()">company_name</if>
+                    <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
+                    <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
+                    <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
+                    <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
+                    <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
+                    <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
+                    <if test="item != null and item.order.key == 'desc'.toString()">desc</if>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test="startRow != null ">LIMIT #{startRow},#{pageSize}</if>
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="getLesseeCompanyByKey" resultMap="lesseeCompany" parameterType="hashMap">
+        <include refid="base_select"/>
+        WHERE id=#{id}
+    </select>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteByKey" parameterType="hashMap">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE id=#{id}
+    </delete>
+
+
+    <!-- 根据主键更新 -->
+    <update id="updateLesseeCompanyByKey" parameterType="com.property.manage.common.pojo.LesseeCompany">
+        UPDATE
+        <include refid="table_name"/>
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="id != null ">,
+                id = #{id}
+            </if>
+            <if test="companyName != null ">,
+                company_name = #{companyName}
+            </if>
+            <if test="unitNumber != null ">,
+                unit_number = #{unitNumber}
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <!-- 分页 -->
+    <select id="getLesseeCompanyListWithPage" parameterType="hashMap" resultMap="lesseeCompany">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+        <include refid="limit"/>
+    </select>
+    <select id="getLesseeCompanyListCount" parameterType="hashMap" resultType="int">
+        SELECT count(1) FROM
+        <include refid="table_name"/>
+        <include refid="where"/>
+    </select>
+    <select id="getLesseeCompanyList" parameterType="hashMap" resultMap="lesseeCompany">
+        <include refid="base_select"/>
+        <include refid="where"/>
+        <include refid="order"/>
+    </select>
+
+    <insert id="insertLesseeCompany" parameterType="com.property.manage.common.pojo.LesseeCompany">
+        INSERT INTO
+        <include refid="table_name"/>
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null ">,
+                id
+            </if>
+            <if test="companyName != null ">,
+                company_name
+            </if>
+            <if test="unitNumber != null ">,
+                unit_number
+            </if>
+            ,add_time
+            ,upd_time
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="id != null">,
+                #{id}
+            </if>
+            <if test="companyName != null">,
+                #{companyName}
+            </if>
+            <if test="unitNumber != null">,
+                #{unitNumber}
+            </if>
+            ,now()
+            ,now()
+        </trim>
+    </insert>
+
+</mapper>

@@ -30,17 +30,17 @@ public class FeeRecordQuery extends BaseQuery {
     }
 
     /**
-     * 用户ID
+     * 企业ID
      **/
-    private Long userId;
+    private Long companyId;
 
-    public Long getUserId() {
-        return userId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public FeeRecordQuery setUserId(Long userId) {
-        this.userId = userId;
-        this.params.put("userId", userId);
+    public FeeRecordQuery setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        this.params.put("companyId", companyId);
         return this;
     }
 
@@ -301,12 +301,12 @@ public class FeeRecordQuery extends BaseQuery {
     }
 
     /**
-     * 设置排序按属性：用户ID
+     * 设置排序按属性：企业ID
      *
      * @param isAsc 是否升序，否则为降序
      */
-    public FeeRecordQuery orderbyUserId(boolean isAsc) {
-        orderFields.add(new OrderField("user_id", isAsc ? SortDirection.ASC : SortDirection.DESC));
+    public FeeRecordQuery orderbyCompanyId(boolean isAsc) {
+        orderFields.add(new OrderField("company_id", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
@@ -414,7 +414,7 @@ public class FeeRecordQuery extends BaseQuery {
     public Map<String, String> getFieldSet() {
         super.getFieldSet();
         fieldMap.put("id", "id");
-        fieldMap.put("user_id", "userId");
+        fieldMap.put("company_id", "companyId");
         fieldMap.put("item_id", "itemId");
         fieldMap.put("the_month", "theMonth");
         fieldMap.put("plan_pay_fee", "planPayFee");

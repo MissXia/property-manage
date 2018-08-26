@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 public class FeeRecordAddParams extends BaseParams {
 
     /**
-     * 用户ID
+     * 企业ID
      */
-    private Long userId;
+    private Long companyId;
 
     /**
      * 收费项目ID
@@ -27,12 +27,12 @@ public class FeeRecordAddParams extends BaseParams {
      */
     private BigDecimal planPayFee;
 
-    public Long getUserId() {
-        return userId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public Long getItemId() {
