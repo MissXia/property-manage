@@ -3,7 +3,9 @@ package com.property.manage.common.dao;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.mappers.UserInfoMapper;
 import com.property.manage.common.pojo.UserInfo;
+import com.property.manage.common.pojo.UserInfoView;
 import com.property.manage.common.query.UserInfoQuery;
+import com.property.manage.common.query.UserInfoViewQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,4 +112,35 @@ public class UserInfoDao implements Serializable {
         return userInfoMapper.getUserInfoList(query.getParams());
     }
 
+    /**
+     * 按条件分页查询
+     *
+     * @param query
+     * @return
+     */
+    public Result<UserInfoView> getUserInfoViewListWithPage(UserInfoViewQuery query) throws SQLException {
+        Result<UserInfoView> rs = new Result<UserInfoView>();
+        Map<String, Object> params = query.getParams();
+        Integer count = userInfoMapper.getUserInfoViewListCount(params);
+        rs.setCount(count);
+        if (count <= 0) {
+            return rs;
+        }
+        try {
+            rs.setList(userInfoMapper.getUserInfoViewListWithPage(params));
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @param query
+     * @return
+     */
+    public List<UserInfoView> getUserInfoViewList(UserInfoViewQuery query) throws SQLException {
+        return userInfoMapper.getUserInfoViewList(query.getParams());
+    }
 }

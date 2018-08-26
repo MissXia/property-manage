@@ -1,6 +1,7 @@
 package com.property.manage.common.mappers;
 
 import com.property.manage.common.pojo.UserInfo;
+import com.property.manage.common.pojo.UserInfoView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -75,4 +76,27 @@ public interface UserInfoMapper {
      * @return
      */
     List<UserInfo> getUserInfoList(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 根据参数查找记录数
+     *
+     * @return
+     * @throws SQLException
+     */
+    Integer getUserInfoViewListCount(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 根据参数分页查询
+     *
+     * @return
+     * @throws SQLException
+     */
+    List<UserInfoView> getUserInfoViewListWithPage(Map<String, Object> params) throws SQLException;
+
+    /**
+     * 按条件查询
+     *
+     * @return
+     */
+    List<UserInfoView> getUserInfoViewList(Map<String, Object> params) throws SQLException;
 }

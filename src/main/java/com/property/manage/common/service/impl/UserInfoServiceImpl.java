@@ -4,7 +4,9 @@ import com.property.manage.base.model.constants.CacheConstants;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.dao.UserInfoDao;
 import com.property.manage.common.pojo.UserInfo;
+import com.property.manage.common.pojo.UserInfoView;
 import com.property.manage.common.query.UserInfoQuery;
+import com.property.manage.common.query.UserInfoViewQuery;
 import com.property.manage.common.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +106,30 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<UserInfo> getUserInfoList(UserInfoQuery query) {
         try {
             return userInfoDao.getUserInfoList(query);
+        } catch (SQLException e) {
+            logger.error("get UserInfo list error." + e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Result<UserInfoView> getUserInfoViewListWithPage(UserInfoViewQuery query) {
+        Result<UserInfoView> rs = null;
+        try {
+            rs = userInfoDao.getUserInfoViewListWithPage(query);
+            if (!rs.isSuccess()) {
+                logger.error("get UserInfo error." + rs.getErrorMsg());
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    @Override
+    public List<UserInfoView> getUserInfoViewList(UserInfoViewQuery query) {
+        try {
+            return userInfoDao.getUserInfoViewList(query);
         } catch (SQLException e) {
             logger.error("get UserInfo list error." + e.getMessage(), e);
         }

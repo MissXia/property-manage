@@ -16,7 +16,9 @@ import com.property.manage.base.session.SessionService;
 import com.property.manage.common.enums.UserTypes;
 import com.property.manage.common.pojo.LesseeCompany;
 import com.property.manage.common.pojo.UserInfo;
+import com.property.manage.common.pojo.UserInfoView;
 import com.property.manage.common.query.UserInfoQuery;
+import com.property.manage.common.query.UserInfoViewQuery;
 import com.property.manage.common.service.LesseeCompanyService;
 import com.property.manage.common.service.UserInfoService;
 import com.property.manage.common.utils.UserInfoUtils;
@@ -57,7 +59,7 @@ public class UserInfoProcessService {
      * @return
      * @throws ParameterException
      */
-    public Result<UserInfo> userInfoResult(UserInfo userInfo, UserListParams params) throws ParameterException {
+    public Result<UserInfoView> userInfoResult(UserInfo userInfo, UserListParams params) throws ParameterException {
         // 用户信息校验
         CheckUtils.ObjectNotNull(params.getUserType(), "用户类型", null);
         // 如果是普通用户
@@ -66,7 +68,7 @@ public class UserInfoProcessService {
             throw new ParameterException("没有权限进行此操作!");
         }
         // 查询参数
-        UserInfoQuery query = new UserInfoQuery();
+        UserInfoViewQuery query = new UserInfoViewQuery();
         // 用户类型
         query.setUserType(params.getUserType());
         // 昵称
@@ -80,7 +82,7 @@ public class UserInfoProcessService {
         // 按创建时间倒序
         query.orderbyAddTime(false);
         // 返回结果
-        return userInfoService.getUserInfoListWithPage(query);
+        return userInfoService.getUserInfoViewListWithPage(query);
     }
 
     /**
