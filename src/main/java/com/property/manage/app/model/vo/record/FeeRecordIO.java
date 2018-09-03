@@ -1,6 +1,7 @@
 package com.property.manage.app.model.vo.record;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author 管辉俊
@@ -27,6 +28,31 @@ public class FeeRecordIO {
      * 单元编号
      */
     private String unitNumber;
+
+    /**
+     * 实收金额
+     */
+    private BigDecimal realPayFee;
+
+    /**
+     * 缴费时间
+     */
+    private Date payTime;
+
+    /**
+     * 缴费状态：0、未缴费 1、已缴费
+     */
+    private String payStatus;
+
+    /**
+     * 开票时间
+     */
+    private Date ticketTime;
+
+    /**
+     * 开票状态：0、未开票 1、已开票
+     */
+    private String ticketStatus;
 
     public String getTheMonth() {
         return theMonth;
@@ -58,5 +84,45 @@ public class FeeRecordIO {
 
     public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber;
+    }
+
+    public BigDecimal getRealPayFee() {
+        return realPayFee;
+    }
+
+    public void setRealPayFee(BigDecimal realPayFee) {
+        this.realPayFee = realPayFee;
+    }
+
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public Date getTicketTime() {
+        return ticketTime;
+    }
+
+    public void setTicketTime(Date ticketTime) {
+        this.ticketTime = ticketTime;
+    }
+
+    public String getTicketStatus() {
+        return ticketStatus;
+    }
+
+    public void setTicketStatus(String ticketStatus) {
+        this.ticketStatus = ticketStatus;
     }
 }

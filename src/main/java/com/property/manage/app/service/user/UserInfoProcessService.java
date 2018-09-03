@@ -149,7 +149,7 @@ public class UserInfoProcessService {
      */
     public void phoneNumber(UserInfo userInfo, UserPhoneParams params) throws ParameterException {
         // 取得用户信息
-        UserInfo info = userInfoService.getUserInfoByKey(userInfo.getId());
+        UserInfo info = userInfoService.getUserInfoByKey(params.getUserId());
         // 异常处理
         if (null == info) {
             // 中断流程

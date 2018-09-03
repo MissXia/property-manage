@@ -231,6 +231,10 @@
         <include refid="base_select"/>
         WHERE id=#{id}
     </select>
+    <select id="getFeeRecordViewByKey" resultMap="feeRecordView" parameterType="hashMap">
+        <include refid="base_select_view"/>
+        WHERE id=#{id}
+    </select>
 
     <!-- 根据主键删除 -->
     <delete id="deleteByKey" parameterType="hashMap">

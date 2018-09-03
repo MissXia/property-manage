@@ -52,6 +52,15 @@ public class FeeRecordDao {
     }
 
     /**
+     * 根据主键查找
+     *
+     * @throws SQLException
+     */
+    public FeeRecordView getFeeRecordViewByKey(Long id) throws SQLException {
+        return feeRecordMapper.getFeeRecordViewByKey(id);
+    }
+
+    /**
      * 根据主键删除
      *
      * @return

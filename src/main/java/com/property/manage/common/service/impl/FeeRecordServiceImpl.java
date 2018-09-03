@@ -48,6 +48,16 @@ public class FeeRecordServiceImpl implements FeeRecordService {
     }
 
     @Override
+    public FeeRecordView getFeeRecordViewByKey(Long id) {
+        try {
+            return feeRecordDao.getFeeRecordViewByKey(id);
+        } catch (SQLException e) {
+            logger.error("dao getFeeRecordViewByKey error.:" + e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
     public Integer deleteByKey(Long id) {
         try {
             return feeRecordDao.deleteByKey(id);

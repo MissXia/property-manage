@@ -28,6 +28,11 @@ public interface FeeRecordService {
     FeeRecord getFeeRecordByKey(Long id);
 
     /**
+     * 根据主键查询
+     */
+    FeeRecordView getFeeRecordViewByKey(Long id);
+
+    /**
      * 根据主键删除
      *
      * @return

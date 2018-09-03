@@ -29,6 +29,13 @@ public interface FeeRecordMapper {
     FeeRecord getFeeRecordByKey(@Param("id") Long id) throws SQLException;
 
     /**
+     * 根据主键查找
+     *
+     * @throws SQLException
+     */
+    FeeRecordView getFeeRecordViewByKey(@Param("id") Long id) throws SQLException;
+
+    /**
      * 根据主键删除
      *
      * @return

@@ -77,7 +77,7 @@ public class FeeRecordProcessService {
     private FeeRecordUploadProcessService feeRecordUploadProcessService;
 
     // 表头数组
-    public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "单元编号:unitNumber", "应收金额:planPayFee"};
+    public final static String[] head = {"所属月份:theMonth", "收费项目:itemName", "单元编号:unitNumber", "应收金额:planPayFee", "实收金额:realPayFee", "缴费时间:payTime", "缴费状态:payStatus", "开票时间:ticketTime", "开票状态:ticketStatus"};
 
     private final static Long userId = 0L;
 
@@ -324,6 +324,19 @@ public class FeeRecordProcessService {
     }
 
     /**
+     * 收费记录详情
+     *
+     * @param userInfo
+     * @param params
+     * @return
+     * @throws ParameterException
+     */
+    public FeeRecordView feeRecordDetail(UserInfo userInfo, FeeRecordDetailParams params) throws ParameterException {
+        // 取得记录详情
+        return feeRecordService.getFeeRecordViewByKey(params.getRecordId());
+    }
+
+    /**
      * 删除收费记录
      *
      * @param params
@@ -564,11 +577,19 @@ public class FeeRecordProcessService {
         // 应收金额
         record.setPlanPayFee(io.getPlanPayFee());
         // 实收金额
-        record.setRealPayFee(BigDecimal.ZERO);
+        record.setRealPayFee(null == io.getRealPayFee() ? BigDecimal.ZERO : io.getRealPayFee());
         // 缴费状态
-        record.setPayStatus(PayStatus.UN_PAY.getKey());
+        PayStatus payStatus = StringUtils.isBlank(io.getPayStatus()) ? null : PayStatus.findByValue(io.getPayStatus());
+        // 缴费状态
+        record.setPayStatus(null == payStatus ? PayStatus.UN_PAY.getKey() : payStatus.getKey());
+        // 缴费时间
+        record.setPayTime(null == io.getPayTime() ? null : io.getPayTime());
+        // 开票时间
+        record.setTicketTime(null == io.getTicketTime() ? null : io.getTicketTime());
+        // 缴费状态
+        TicketStatus ticketStatus = StringUtils.isBlank(io.getTicketStatus()) ? null : TicketStatus.findByValue(io.getTicketStatus());
         // 开票状态
-        record.setTicketStatus(TicketStatus.UN_TICKET.getKey());
+        record.setTicketStatus(null == ticketStatus ? TicketStatus.UN_TICKET.getKey() : ticketStatus.getKey());
         // 创建时间
         record.setAddTime(new Date());
         // 更新时间
@@ -636,6 +657,51 @@ public class FeeRecordProcessService {
         if (StringUtils.isBlank(io.getItemName())) {
             // 错误信息
             ExcelUtils.makeCellDataError(cellDatas, "itemName", "收费项目必须输入");
+        }
+        // 有任意缴费信息的情况下
+        if (StringUtils.isNotBlank(io.getPayStatus()) || null != io.getRealPayFee() || null != io.getPayTime()) {
+            // 异常判断
+            if (StringUtils.isBlank(io.getPayStatus())) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "payStatus", "有任意缴费信息的情况下,缴费状态必须输入");
+                // 取得状态
+                PayStatus payStatus = PayStatus.findByValue(io.getPayStatus());
+                // 异常判断
+                if (null == payStatus) {
+                    // 错误信息
+                    ExcelUtils.makeCellDataError(cellDatas, "payStatus", "缴费状态不正确");
+                }
+            }
+            // 异常判断
+            if (null == io.getRealPayFee()) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "realPayFee", "有任意缴费信息的情况下,实缴金额必须输入");
+            }
+            // 异常判断
+            if (null == io.getPayTime()) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "payTime", "有任意缴费信息的情况下,缴费时间必须输入");
+            }
+        }
+        // 有任意开票信息的情况下
+        if (StringUtils.isNotBlank(io.getTicketStatus()) || null != io.getTicketTime()) {
+            // 异常判断
+            if (StringUtils.isBlank(io.getTicketStatus())) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "ticketStatus", "有任意开票信息的情况下,开票状态必须输入");
+                // 取得状态
+                TicketStatus ticketStatus = TicketStatus.findByValue(io.getTicketStatus());
+                // 异常判断
+                if (null == ticketStatus) {
+                    // 错误信息
+                    ExcelUtils.makeCellDataError(cellDatas, "ticketStatus", "开票状态不正确");
+                }
+            }
+            // 异常判断
+            if (null == io.getTicketTime()) {
+                // 错误信息
+                ExcelUtils.makeCellDataError(cellDatas, "ticketTime", "有任意开票信息的情况下,开票时间必须输入");
+            }
         }
     }
 

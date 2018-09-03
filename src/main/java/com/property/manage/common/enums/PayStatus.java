@@ -50,4 +50,17 @@ public enum PayStatus {
         // 未找到
         return null;
     }
+
+    public static PayStatus findByValue(String value) {
+        // 循环处理
+        for (PayStatus type : PayStatus.values()) {
+            // 匹配值
+            if (type.getValue().equals(value)) {
+                // 返回类型
+                return type;
+            }
+        }
+        // 未找到
+        return null;
+    }
 }

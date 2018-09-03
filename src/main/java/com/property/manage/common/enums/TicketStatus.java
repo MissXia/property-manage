@@ -50,4 +50,17 @@ public enum TicketStatus {
         // 未找到
         return null;
     }
+
+    public static TicketStatus findByValue(String value) {
+        // 循环处理
+        for (TicketStatus type : TicketStatus.values()) {
+            // 匹配值
+            if (type.getValue().equals(value)) {
+                // 返回类型
+                return type;
+            }
+        }
+        // 未找到
+        return null;
+    }
 }

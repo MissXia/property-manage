@@ -59,6 +59,15 @@ public class FeeRecordController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/detail", method = RequestMethod.POST)
+    public Response detail(@RequestBody FeeRecordDetailParams params) throws ParameterException, SessionException {
+        // 取得Session中的用户
+        UserInfo userInfo = sessionService.getUserInfo();
+        // 返回数据
+        return Response.success(feeRecordProcessService.feeRecordDetail(userInfo, params));
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public Response del(@RequestBody FeeRecordDelParams params) throws ParameterException, SessionException {
         // 取得Session中的用户
