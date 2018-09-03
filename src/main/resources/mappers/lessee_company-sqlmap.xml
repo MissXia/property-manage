@@ -35,7 +35,7 @@
                 AND company_name=#{companyName}
             </if>
             <if test="unitNumber != null">
-                AND unit_number=#{unitNumber}
+                AND find_in_set(#{unitNumber}, unit_number) &gt; 0
             </if>
         </where>
     </sql>
