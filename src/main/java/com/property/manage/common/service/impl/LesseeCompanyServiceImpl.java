@@ -3,7 +3,9 @@ package com.property.manage.common.service.impl;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.dao.LesseeCompanyDao;
 import com.property.manage.common.pojo.LesseeCompany;
+import com.property.manage.common.pojo.LesseeCompanyView;
 import com.property.manage.common.query.LesseeCompanyQuery;
+import com.property.manage.common.query.LesseeCompanyViewQuery;
 import com.property.manage.common.service.LesseeCompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +88,30 @@ public class LesseeCompanyServiceImpl implements LesseeCompanyService {
             return lesseeCompanyDao.getLesseeCompanyList(query);
         } catch (SQLException e) {
             logger.error("get LesseeCompany list error." + e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Result<LesseeCompanyView> getLesseeCompanyViewListWithPage(LesseeCompanyViewQuery query) {
+        Result<LesseeCompanyView> rs = null;
+        try {
+            rs = lesseeCompanyDao.getLesseeCompanyViewListWithPage(query);
+            if (!rs.isSuccess()) {
+                logger.error("get LesseeCompanyView error." + rs.getErrorMsg());
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    @Override
+    public List<LesseeCompanyView> getLesseeCompanyViewList(LesseeCompanyViewQuery query) {
+        try {
+            return lesseeCompanyDao.getLesseeCompanyViewList(query);
+        } catch (SQLException e) {
+            logger.error("get LesseeCompanyView list error." + e.getMessage(), e);
         }
         return Collections.emptyList();
     }

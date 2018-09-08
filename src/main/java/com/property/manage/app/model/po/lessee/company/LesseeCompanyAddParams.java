@@ -7,21 +7,11 @@ public class LesseeCompanyAddParams extends BaseParams {
 
     private String companyName;
 
-    private String unitNumber;
-
     public String getCompanyName() {
         return companyName;
     }
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
     }
 }

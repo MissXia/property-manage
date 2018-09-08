@@ -1,7 +1,7 @@
 package com.property.manage.common.mappers;
 
-import com.property.manage.common.pojo.LesseeCompany;
-import com.property.manage.common.pojo.LesseeCompanyView;
+import com.property.manage.common.pojo.LesseeCompanyUnit;
+import com.property.manage.common.pojo.LesseeCompanyUnitView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2018-06-10
  */
 @Repository
-public interface LesseeCompanyMapper {
+public interface LesseeCompanyUnitMapper {
 
     /**
      * 新增数据
@@ -22,14 +22,14 @@ public interface LesseeCompanyMapper {
      * @return
      * @throws SQLException
      */
-    Integer insertLesseeCompany(LesseeCompany record) throws SQLException;
+    Integer insertLesseeCompanyUnit(LesseeCompanyUnit record) throws SQLException;
 
     /**
      * 根据主键查找
      *
      * @throws SQLException
      */
-    LesseeCompany getLesseeCompanyByKey(@Param("id") Long id) throws SQLException;
+    LesseeCompanyUnit getLesseeCompanyUnitByKey(@Param("id") Long id) throws SQLException;
 
     /**
      * 根据主键删除
@@ -46,7 +46,7 @@ public interface LesseeCompanyMapper {
      * @return
      * @throws SQLException
      */
-    Integer updateLesseeCompanyByKey(LesseeCompany record) throws SQLException;
+    Integer updateLesseeCompanyUnitByKey(LesseeCompanyUnit record) throws SQLException;
 
     /**
      * 根据参数查找记录数
@@ -54,7 +54,7 @@ public interface LesseeCompanyMapper {
      * @return
      * @throws SQLException
      */
-    Integer getLesseeCompanyListCount(Map<String, Object> params) throws SQLException;
+    Integer getLesseeCompanyUnitListCount(Map<String, Object> params) throws SQLException;
 
     /**
      * 根据参数分页查询
@@ -62,14 +62,14 @@ public interface LesseeCompanyMapper {
      * @return
      * @throws SQLException
      */
-    List<LesseeCompany> getLesseeCompanyListWithPage(Map<String, Object> params) throws SQLException;
+    List<LesseeCompanyUnit> getLesseeCompanyUnitListWithPage(Map<String, Object> params) throws SQLException;
 
     /**
      * 按条件查询
      *
      * @return
      */
-    List<LesseeCompany> getLesseeCompanyList(Map<String, Object> params) throws SQLException;
+    List<LesseeCompanyUnit> getLesseeCompanyUnitList(Map<String, Object> params) throws SQLException;
 
     /**
      * 根据参数查找记录数
@@ -77,20 +77,20 @@ public interface LesseeCompanyMapper {
      * @return
      * @throws SQLException
      */
-    Integer getLesseeCompanyViewListCount(Map<String, Object> params) throws SQLException;
+    Integer getLesseeCompanyUnitViewListCount(Map<String, Object> params) throws SQLException;
 
     /**
      * 根据参数分页查询
      *
      * @return
-     * @throws SQLException
+     * @tLesseeCompanyUnitption
      */
-    List<LesseeCompanyView> getLesseeCompanyViewListWithPage(Map<String, Object> params) throws SQLException;
+    List<LesseeCompanyUnitView> getLesseeCompanyUnitViewListWithPage(Map<String, Object> params) throws SQLException;
 
     /**
      * 按条件查询
      *
      * @return
      */
-    List<LesseeCompanyView> getLesseeCompanyViewList(Map<String, Object> params) throws SQLException;
+    List<LesseeCompanyUnitView> getLesseeCompanyUnitViewList(Map<String, Object> params) throws SQLException;
 }

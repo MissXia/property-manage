@@ -14,6 +14,7 @@
         <result property="ticketStatus" column="ticket_status"/>
         <result property="addTime" column="add_time"/>
         <result property="updTime" column="upd_time"/>
+        <result property="unitNumber" column="unit_number"/>
     </resultMap>
 
     <resultMap id="feeRecordView" type="com.property.manage.common.pojo.FeeRecordView">
@@ -38,7 +39,7 @@
 
     <sql id="table_name_view">fee_record_view</sql>
 
-    <sql id="base_col">id,company_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time</sql>
+    <sql id="base_col">id,company_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time,unit_number</sql>
 
     <sql id="base_col_view">id,company_id,item_id,the_month,plan_pay_fee,real_pay_fee,pay_time,pay_status,ticket_time,ticket_status,add_time,upd_time,item_name,company_name,unit_number</sql>
 
@@ -104,6 +105,9 @@
             </if>
             <if test="ticketStatus != null">
                 AND ticket_status=#{ticketStatus}
+            </if>
+            <if test="unitNumber != null">
+                AND unit_number=#{unitNumber}
             </if>
         </where>
     </sql>
@@ -185,6 +189,7 @@
                     <if test="item != null and item.fieldName == 'ticket_status'.toString()">ticket_status</if>
                     <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
                     <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
+                    <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
                     <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
                     <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
                     <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>
@@ -254,6 +259,9 @@
             </if>
             <if test="companyId != null ">,
                 company_id = #{companyId}
+            </if>
+            <if test="unitNumber != null">,
+                unit_number = #{unitNumber}
             </if>
             <if test="itemId != null ">,
                 item_id = #{itemId}
@@ -328,6 +336,9 @@
             <if test="companyId != null ">,
                 company_id
             </if>
+            <if test="unitNumber != null">,
+                unit_number
+            </if>
             <if test="itemId != null ">,
                 item_id
             </if>
@@ -362,6 +373,9 @@
             </if>
             <if test="companyId != null">,
                 #{companyId}
+            </if>
+            <if test="unitNumber != null">,
+                #{unitNumber}
             </if>
             <if test="itemId != null">,
                 #{itemId}

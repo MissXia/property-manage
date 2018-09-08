@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author 管辉俊
  */
-public class LesseeCompanyQuery extends BaseQuery {
+public class LesseeCompanyUnitQuery extends BaseQuery {
 
     /**==============================批量查询、更新、删除时的Where条件设置==================================**/
     /**
@@ -23,24 +23,39 @@ public class LesseeCompanyQuery extends BaseQuery {
         return id;
     }
 
-    public LesseeCompanyQuery setId(Long id) {
+    public LesseeCompanyUnitQuery setId(Long id) {
         this.id = id;
         this.params.put("id", id);
         return this;
     }
 
     /**
-     * 企业名称
+     * 企业ID
      **/
-    private String companyName;
+    private Long companyId;
 
-    public String getCompanyName() {
-        return companyName;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public LesseeCompanyQuery setCompanyName(String companyName) {
-        this.companyName = companyName;
-        this.params.put("companyName", companyName);
+    public LesseeCompanyUnitQuery setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        this.params.put("companyId", companyId);
+        return this;
+    }
+
+    /**
+     * 单元编号
+     **/
+    private String unitNumber;
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public LesseeCompanyUnitQuery setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
+        this.params.put("unitNumber", unitNumber);
         return this;
     }
 
@@ -53,7 +68,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return addTimeStart;
     }
 
-    public LesseeCompanyQuery setAddTimeStart(Date addTime) {
+    public LesseeCompanyUnitQuery setAddTimeStart(Date addTime) {
         this.addTimeStart = addTime;
         this.params.put("addTimeStart", addTime);
         return this;
@@ -65,7 +80,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return addTimeEnd;
     }
 
-    public LesseeCompanyQuery setAddTimeEnd(Date addTime) {
+    public LesseeCompanyUnitQuery setAddTimeEnd(Date addTime) {
         this.addTimeEnd = addTime;
         this.params.put("addTimeEnd", addTime);
         return this;
@@ -77,7 +92,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return addTimeEqual;
     }
 
-    public LesseeCompanyQuery setAddTimeEqual(Date addTime) {
+    public LesseeCompanyUnitQuery setAddTimeEqual(Date addTime) {
         this.addTimeEqual = addTime;
         this.params.put("addTimeEqual", addTime);
         return this;
@@ -92,7 +107,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return updTimeStart;
     }
 
-    public LesseeCompanyQuery setUpdTimeStart(Date updTime) {
+    public LesseeCompanyUnitQuery setUpdTimeStart(Date updTime) {
         this.updTimeStart = updTime;
         this.params.put("updTimeStart", updTime);
         return this;
@@ -104,7 +119,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return updTimeEnd;
     }
 
-    public LesseeCompanyQuery setUpdTimeEnd(Date updTime) {
+    public LesseeCompanyUnitQuery setUpdTimeEnd(Date updTime) {
         this.updTimeEnd = updTime;
         this.params.put("updTimeEnd", updTime);
         return this;
@@ -116,7 +131,7 @@ public class LesseeCompanyQuery extends BaseQuery {
         return updTimeEqual;
     }
 
-    public LesseeCompanyQuery setUpdTimeEqual(Date updTime) {
+    public LesseeCompanyUnitQuery setUpdTimeEqual(Date updTime) {
         this.updTimeEqual = updTime;
         this.params.put("updTimeEqual", updTime);
         return this;
@@ -127,18 +142,28 @@ public class LesseeCompanyQuery extends BaseQuery {
      *
      * @param isAsc 是否升序，否则为降序
      */
-    public LesseeCompanyQuery orderbyId(boolean isAsc) {
+    public LesseeCompanyUnitQuery orderbyId(boolean isAsc) {
         orderFields.add(new OrderField("id", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
     /**
-     * 设置排序按属性：企业名称
+     * 设置排序按属性：企业ID
      *
      * @param isAsc 是否升序，否则为降序
      */
-    public LesseeCompanyQuery orderbyCompanyName(boolean isAsc) {
-        orderFields.add(new OrderField("company_name", isAsc ? SortDirection.ASC : SortDirection.DESC));
+    public LesseeCompanyUnitQuery orderbyCompanyId(boolean isAsc) {
+        orderFields.add(new OrderField("company_id", isAsc ? SortDirection.ASC : SortDirection.DESC));
+        return this;
+    }
+
+    /**
+     * 设置排序按属性：单元编号
+     *
+     * @param isAsc 是否升序，否则为降序
+     */
+    public LesseeCompanyUnitQuery orderbyUnitNumber(boolean isAsc) {
+        orderFields.add(new OrderField("unit_number", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
 
@@ -147,7 +172,7 @@ public class LesseeCompanyQuery extends BaseQuery {
      *
      * @param isAsc 是否升序，否则为降序
      */
-    public LesseeCompanyQuery orderbyAddTime(boolean isAsc) {
+    public LesseeCompanyUnitQuery orderbyAddTime(boolean isAsc) {
         orderFields.add(new OrderField("add_time", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
@@ -157,7 +182,7 @@ public class LesseeCompanyQuery extends BaseQuery {
      *
      * @param isAsc 是否升序，否则为降序
      */
-    public LesseeCompanyQuery orderbyUpdTime(boolean isAsc) {
+    public LesseeCompanyUnitQuery orderbyUpdTime(boolean isAsc) {
         orderFields.add(new OrderField("upd_time", isAsc ? SortDirection.ASC : SortDirection.DESC));
         return this;
     }
@@ -166,7 +191,8 @@ public class LesseeCompanyQuery extends BaseQuery {
     public Map<String, String> getFieldSet() {
         super.getFieldSet();
         fieldMap.put("id", "id");
-        fieldMap.put("company_name", "companyName");
+        fieldMap.put("company_id", "companyId");
+        fieldMap.put("unit_number", "unitNumber");
         fieldMap.put("add_time", "addTime");
         fieldMap.put("upd_time", "updTime");
         return fieldMap;

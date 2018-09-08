@@ -6,8 +6,7 @@ import com.google.common.collect.Lists;
 import com.property.manage.app.model.po.fee.record.*;
 import com.property.manage.app.model.vo.record.FeeRecordIO;
 import com.property.manage.app.service.fee.item.FeeItemProcessService;
-import com.property.manage.app.service.lessee.company.LesseeCompanyProcessService;
-import com.property.manage.app.service.user.UserInfoProcessService;
+import com.property.manage.app.service.lessee.company.unit.LesseeCompanyUnitProcessService;
 import com.property.manage.base.excel.model.CellData;
 import com.property.manage.base.excel.model.Header;
 import com.property.manage.base.excel.service.ExportExcel;
@@ -28,7 +27,6 @@ import com.property.manage.common.query.FeeRecordViewQuery;
 import com.property.manage.common.service.FeeItemService;
 import com.property.manage.common.service.FeeRecordService;
 import com.property.manage.common.service.LesseeCompanyService;
-import com.property.manage.common.service.UserInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -56,16 +54,10 @@ public class FeeRecordProcessService {
     private FeeRecordService feeRecordService;
 
     @Resource
-    private UserInfoService userInfoService;
-
-    @Resource
-    private UserInfoProcessService userInfoProcessService;
-
-    @Resource
     private LesseeCompanyService lesseeCompanyService;
 
     @Resource
-    private LesseeCompanyProcessService lesseeCompanyProcessService;
+    private LesseeCompanyUnitProcessService lesseeCompanyUnitProcessService;
 
     @Resource
     private FeeItemService feeItemService;
@@ -163,15 +155,18 @@ public class FeeRecordProcessService {
      * 查询费用列表
      *
      * @param companyId
+     * @param unitNumber
      * @param itemId
      * @param theMonth
      * @return
      */
-    private List<FeeRecord> findFeeRecordList(Long companyId, Long itemId, String theMonth) {
+    private List<FeeRecord> findFeeRecordList(Long companyId, String unitNumber, Long itemId, String theMonth) {
         // 查询对象
         FeeRecordQuery query = new FeeRecordQuery();
         // 用户iD
         query.setCompanyId(companyId);
+        // 单元编号
+        query.setUnitNumber(unitNumber);
         // 收费项目ID
         query.setItemId(itemId);
         // 费用所属月份
@@ -194,6 +189,8 @@ public class FeeRecordProcessService {
         }
         // 租户企业
         CheckUtils.ObjectNotNull(params.getCompanyId(), "租户企业", null);
+        // 单元编号
+        CheckUtils.ObjectNotNull(params.getUnitNumber(), "单元编号", null);
         // 收费项目
         CheckUtils.ObjectNotNull(params.getItemId(), "收费项目", null);
         // 所属月份
@@ -215,16 +212,18 @@ public class FeeRecordProcessService {
             throw new ParameterException("收费项目不存在!");
         }
         // 按用户,项目,月份查找记录
-        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getItemId(), params.getTheMonth());
+        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getUnitNumber(), params.getItemId(), params.getTheMonth());
         // 异常处理
         if (CollectionUtils.isNotEmpty(records)) {
             // 中断流程
-            throw new ParameterException("租户单元编号[" + company.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
+            throw new ParameterException("租户单元编号[" + params.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
         }
         // 实例化对象
         FeeRecord record = new FeeRecord();
         // 用户ID
         record.setCompanyId(params.getCompanyId());
+        // 单元编号
+        record.setUnitNumber(params.getUnitNumber());
         // 项目ID
         record.setItemId(params.getItemId());
         // 所属月份
@@ -276,6 +275,8 @@ public class FeeRecordProcessService {
         }
         // 租户企业
         CheckUtils.ObjectNotNull(params.getCompanyId(), "租户企业", null);
+        // 单元编号
+        CheckUtils.ObjectNotNull(params.getUnitNumber(), "单元编号", null);
         // 收费项目
         CheckUtils.ObjectNotNull(params.getItemId(), "收费项目", null);
         // 所属月份
@@ -297,7 +298,7 @@ public class FeeRecordProcessService {
             throw new ParameterException("收费项目不存在!");
         }
         // 按用户,项目,月份查找记录
-        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getItemId(), params.getTheMonth());
+        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getUnitNumber(), params.getItemId(), params.getTheMonth());
         // 异常处理
         if (CollectionUtils.isNotEmpty(records)) {
             // 循环处理
@@ -305,12 +306,14 @@ public class FeeRecordProcessService {
                 // 如果不是同一条数据
                 if (!record.getId().equals(feeRecord.getId())) {
                     // 中断流程
-                    throw new ParameterException("租户单元编号[" + company.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
+                    throw new ParameterException("租户单元编号[" + params.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
                 }
             }
         }
         // 企业ID
         feeRecord.setCompanyId(params.getCompanyId());
+        // 单元编号
+        feeRecord.setUnitNumber(params.getUnitNumber());
         // 项目ID
         feeRecord.setItemId(params.getItemId());
         // 所属月份
@@ -550,11 +553,11 @@ public class FeeRecordProcessService {
         // 收费项目检查
         FeeItem item = feeItemCheck(io, cellDatas);
         // 单元用户检查
-        LesseeCompany company = lesseeCompanyCheck(io, cellDatas);
+        LesseeCompanyUnit unit = lesseeCompanyUnitCheck(io, cellDatas);
         // 简单检查异常抛出
         ExcelUtils.cellDataCheck(cellDatas, null);
         // 上传单条记录
-        updateFeeRecord(io, item, company);
+        updateFeeRecord(io, item, unit);
     }
 
     /**
@@ -562,14 +565,16 @@ public class FeeRecordProcessService {
      *
      * @param io
      * @param item
-     * @param company
+     * @param unit
      * @throws ParameterException
      */
-    private void updateFeeRecord(FeeRecordIO io, FeeItem item, LesseeCompany company) throws ParameterException {
+    private void updateFeeRecord(FeeRecordIO io, FeeItem item, LesseeCompanyUnit unit) throws ParameterException {
         // 实例化对象
         FeeRecord record = new FeeRecord();
         // 用户ID
-        record.setCompanyId(company.getId());
+        record.setCompanyId(unit.getCompanyId());
+        // 单元编号
+        record.setUnitNumber(unit.getUnitNumber());
         // 项目ID
         record.setItemId(item.getId());
         // 所属月份
@@ -735,18 +740,18 @@ public class FeeRecordProcessService {
      * @return
      * @throws ParameterException
      */
-    private LesseeCompany lesseeCompanyCheck(FeeRecordIO io, Map<String, CellData> cellDatas) throws ParameterException {
+    private LesseeCompanyUnit lesseeCompanyUnitCheck(FeeRecordIO io, Map<String, CellData> cellDatas) throws ParameterException {
         // 查找用户
-        LesseeCompany company = lesseeCompanyProcessService.findLesseeCompanyByUnit(io.getUnitNumber());
-        // 如果没有查找到跟进人名称
-        if (null == company) {
+        LesseeCompanyUnit unit = lesseeCompanyUnitProcessService.findLesseeCompanyUnit(null, io.getUnitNumber());
+        // 如果没有查找到
+        if (null == unit) {
             // 错误信息
-            ExcelUtils.makeCellDataError(cellDatas, "unitNumber", "单元编号对应的租户不存在");
+            ExcelUtils.makeCellDataError(cellDatas, "unitNumber", "单元编号不存在");
             // 抛出异常
-            throw new ParameterException("单元编号对应的租户不存在");
+            throw new ParameterException("单元编号不存在");
         }
         // 返回对象
-        return company;
+        return unit;
     }
 
     /**

@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.property.manage.common.mappers.LesseeCompanyMapper">
+<mapper namespace="com.property.manage.common.mappers.LesseeCompanyUnitMapper">
 
-    <resultMap id="lesseeCompany" type="com.property.manage.common.pojo.LesseeCompany">
+    <resultMap id="lesseeCompanyUnit" type="com.property.manage.common.pojo.LesseeCompanyUnit">
         <result property="id" column="id"/>
-        <result property="companyName" column="company_name"/>
+        <result property="companyId" column="company_id"/>
+        <result property="unitNumber" column="unit_number"/>
         <result property="addTime" column="add_time"/>
         <result property="updTime" column="upd_time"/>
     </resultMap>
 
-    <resultMap id="lesseeCompanyView" type="com.property.manage.common.pojo.LesseeCompanyView">
+    <resultMap id="lesseeCompanyUnitView" type="com.property.manage.common.pojo.LesseeCompanyUnitView">
         <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
         <result property="companyName" column="company_name"/>
         <result property="unitNumber" column="unit_number"/>
         <result property="addTime" column="add_time"/>
         <result property="updTime" column="upd_time"/>
     </resultMap>
 
-    <sql id="table_name">lessee_company</sql>
+    <sql id="table_name">lessee_company_unit</sql>
 
-    <sql id="base_col">id,company_name,add_time,upd_time</sql>
+    <sql id="base_col">id,company_id,unit_number,add_time,upd_time</sql>
 
     <sql id="base_select">
         SELECT
@@ -27,9 +29,9 @@
         <include refid="table_name"/>
     </sql>
 
-    <sql id="table_name_view">lessee_company_view</sql>
+    <sql id="table_name_view">lessee_company_unit_view</sql>
 
-    <sql id="base_col_view">id,company_name,unit_number,add_time,upd_time</sql>
+    <sql id="base_col_view">id,company_id,company_name,unit_number,add_time,upd_time</sql>
 
     <sql id="base_select_view">
         SELECT
@@ -44,13 +46,11 @@
             <if test="id != null">
                 AND id=#{id}
             </if>
-            <if test="keys != null">
-                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
-                    #{item}
-                </foreach>
+            <if test="companyId != null">
+                AND company_id=#{companyId}
             </if>
-            <if test="companyName != null">
-                AND company_name=#{companyName}
+            <if test="unitNumber != null">
+                AND find_in_set(#{unitNumber}, unit_number) &gt; 0
             </if>
         </where>
     </sql>
@@ -60,16 +60,14 @@
             <if test="id != null">
                 AND id=#{id}
             </if>
-            <if test="keys != null">
-                <foreach collection="keys" item="item" separator="," close=")" open=" AND id in (">
-                    #{item}
-                </foreach>
+            <if test="companyId != null">
+                AND company_id=#{companyId}
             </if>
             <if test="companyName != null">
                 AND company_name=#{companyName}
             </if>
             <if test="unitNumber != null">
-                AND find_in_set(#{unitNumber}, unit_number) &gt; 0
+                AND unit_number = #{unitNumber}
             </if>
         </where>
     </sql>
@@ -79,7 +77,8 @@
             <trim prefix=" ORDER BY ">
                 <foreach collection="orderFields" item="item" separator="," close="" open="">
                     <if test="item != null and item.fieldName == 'id'.toString()">id</if>
-                    <if test="item != null and item.fieldName == 'company_name'.toString()">company_name</if>
+                    <if test="item != null and item.fieldName == 'company_id'.toString()">company_id</if>
+                    <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
                     <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
                     <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
                     <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
@@ -96,6 +95,7 @@
             <trim prefix=" ORDER BY ">
                 <foreach collection="orderFields" item="item" separator="," close="" open="">
                     <if test="item != null and item.fieldName == 'id'.toString()">id</if>
+                    <if test="item != null and item.fieldName == 'company_id'.toString()">company_id</if>
                     <if test="item != null and item.fieldName == 'company_name'.toString()">company_name</if>
                     <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
                     <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
@@ -114,7 +114,7 @@
     </sql>
 
     <!-- 根据主键查询 -->
-    <select id="getLesseeCompanyByKey" resultMap="lesseeCompany" parameterType="hashMap">
+    <select id="getLesseeCompanyUnitByKey" resultMap="lesseeCompanyUnit" parameterType="hashMap">
         <include refid="base_select"/>
         WHERE id=#{id}
     </select>
@@ -126,65 +126,71 @@
         WHERE id=#{id}
     </delete>
 
+
     <!-- 根据主键更新 -->
-    <update id="updateLesseeCompanyByKey" parameterType="com.property.manage.common.pojo.LesseeCompany">
+    <update id="updateLesseeCompanyUnitByKey" parameterType="com.property.manage.common.pojo.LesseeCompanyUnit">
         UPDATE
         <include refid="table_name"/>
         <trim prefix="SET" prefixOverrides=",">
             <if test="id != null ">,
                 id = #{id}
             </if>
-            <if test="companyName != null ">,
-                company_name = #{companyName}
+            <if test="companyId != null ">,
+                company_id = #{companyId}
+            </if>
+            <if test="unitNumber != null ">,
+                unit_number = #{unitNumber}
             </if>
         </trim>
         WHERE id=#{id}
     </update>
     <!-- 分页 -->
-    <select id="getLesseeCompanyListWithPage" parameterType="hashMap" resultMap="lesseeCompany">
+    <select id="getLesseeCompanyUnitListWithPage" parameterType="hashMap" resultMap="lesseeCompanyUnit">
         <include refid="base_select"/>
         <include refid="where"/>
         <include refid="order"/>
         <include refid="limit"/>
     </select>
-    <select id="getLesseeCompanyListCount" parameterType="hashMap" resultType="int">
+    <select id="getLesseeCompanyUnitListCount" parameterType="hashMap" resultType="int">
         SELECT count(1) FROM
         <include refid="table_name"/>
         <include refid="where"/>
     </select>
-    <select id="getLesseeCompanyList" parameterType="hashMap" resultMap="lesseeCompany">
+    <select id="getLesseeCompanyUnitList" parameterType="hashMap" resultMap="lesseeCompanyUnit">
         <include refid="base_select"/>
         <include refid="where"/>
         <include refid="order"/>
     </select>
-
     <!-- 分页 -->
-    <select id="getLesseeCompanyViewListWithPage" parameterType="hashMap" resultMap="lesseeCompanyView">
+    <select id="getLesseeCompanyUnitViewListWithPage" parameterType="hashMap" resultMap="lesseeCompanyUnitView">
         <include refid="base_select_view"/>
         <include refid="where_view"/>
         <include refid="order_view"/>
         <include refid="limit"/>
     </select>
-    <select id="getLesseeCompanyViewListCount" parameterType="hashMap" resultType="int">
+    <select id="getLesseeCompanyUnitViewListCount" parameterType="hashMap" resultType="int">
         SELECT count(1) FROM
         <include refid="table_name_view"/>
         <include refid="where_view"/>
     </select>
-    <select id="getLesseeCompanyViewList" parameterType="hashMap" resultMap="lesseeCompanyView">
+    <select id="getLesseeCompanyUnitViewList" parameterType="hashMap" resultMap="lesseeCompanyUnitView">
         <include refid="base_select_view"/>
         <include refid="where_view"/>
         <include refid="order_view"/>
     </select>
 
-    <insert id="insertLesseeCompany" parameterType="com.property.manage.common.pojo.LesseeCompany">
+    <insert id="insertLesseeCompanyUnit" parameterType="com.property.manage.common.pojo.LesseeCompanyUnit">
         INSERT INTO
         <include refid="table_name"/>
         <trim prefix="(" suffix=")" prefixOverrides=",">
             <if test="id != null ">,
                 id
             </if>
-            <if test="companyName != null ">,
-                company_name
+            <if test="companyId != null ">,
+                company_id
+            </if>
+            <if test="unitNumber != null ">,
+                unit_number
             </if>
             ,add_time
             ,upd_time
@@ -194,8 +200,11 @@
             <if test="id != null">,
                 #{id}
             </if>
-            <if test="companyName != null">,
-                #{companyName}
+            <if test="companyId != null">,
+                #{companyId}
+            </if>
+            <if test="unitNumber != null">,
+                #{unitNumber}
             </if>
             ,now()
             ,now()

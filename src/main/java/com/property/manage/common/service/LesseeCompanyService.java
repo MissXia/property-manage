@@ -2,7 +2,9 @@ package com.property.manage.common.service;
 
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.pojo.LesseeCompany;
+import com.property.manage.common.pojo.LesseeCompanyView;
 import com.property.manage.common.query.LesseeCompanyQuery;
+import com.property.manage.common.query.LesseeCompanyViewQuery;
 
 import java.util.List;
 
@@ -53,4 +55,20 @@ public interface LesseeCompanyService {
      * @return
      */
     List<LesseeCompany> getLesseeCompanyList(LesseeCompanyQuery query);
+
+    /**
+     * 根据条件查询分页查询
+     *
+     * @param query 查询条件
+     * @return
+     */
+    Result<LesseeCompanyView> getLesseeCompanyViewListWithPage(LesseeCompanyViewQuery query);
+
+    /**
+     * 根据条件查询
+     *
+     * @param query 查询条件
+     * @return
+     */
+    List<LesseeCompanyView> getLesseeCompanyViewList(LesseeCompanyViewQuery query);
 }

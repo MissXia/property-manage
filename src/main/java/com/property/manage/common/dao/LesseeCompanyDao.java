@@ -3,7 +3,9 @@ package com.property.manage.common.dao;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.common.mappers.LesseeCompanyMapper;
 import com.property.manage.common.pojo.LesseeCompany;
+import com.property.manage.common.pojo.LesseeCompanyView;
 import com.property.manage.common.query.LesseeCompanyQuery;
+import com.property.manage.common.query.LesseeCompanyViewQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +100,37 @@ public class LesseeCompanyDao {
      */
     public List<LesseeCompany> getLesseeCompanyList(LesseeCompanyQuery query) throws SQLException {
         return lesseeCompanyMapper.getLesseeCompanyList(query.getParams());
+    }
+
+    /**
+     * 按条件分页查询
+     *
+     * @param query
+     * @return
+     */
+    public Result<LesseeCompanyView> getLesseeCompanyViewListWithPage(LesseeCompanyViewQuery query) throws SQLException {
+        Result<LesseeCompanyView> rs = new Result<LesseeCompanyView>();
+        Map<String, Object> params = query.getParams();
+        Integer count = lesseeCompanyMapper.getLesseeCompanyViewListCount(params);
+        rs.setCount(count);
+        if (count <= 0) {
+            return rs;
+        }
+        try {
+            rs.setList(lesseeCompanyMapper.getLesseeCompanyViewListWithPage(params));
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return rs;
+    }
+
+    /**
+     * 按条件查询
+     *
+     * @param query
+     * @return
+     */
+    public List<LesseeCompanyView> getLesseeCompanyViewList(LesseeCompanyViewQuery query) throws SQLException {
+        return lesseeCompanyMapper.getLesseeCompanyViewList(query.getParams());
     }
 }

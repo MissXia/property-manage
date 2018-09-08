@@ -38,7 +38,6 @@
         <result property="addTime" column="add_time"/>
         <result property="updTime" column="upd_time"/>
         <result property="companyName" column="company_name"/>
-        <result property="unitNumber" column="unit_number"/>
     </resultMap>
 
     <sql id="table_name">user_info</sql>
@@ -47,7 +46,7 @@
 
     <sql id="base_col">id,company_id,nick_name,phone_number,password,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time</sql>
 
-    <sql id="base_col_view">id,company_id,nick_name,phone_number,password,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time,company_name,unit_number</sql>
+    <sql id="base_col_view">id,company_id,nick_name,phone_number,password,user_type,avatar_url,gender,open_id,session_key,city,province,country,language,add_time,upd_time,company_name</sql>
 
     <sql id="base_select">
         SELECT
@@ -165,9 +164,6 @@
             <if test="companyName != null">
                 AND company_name=#{companyName}
             </if>
-            <if test="unitNumber != null">
-                AND unit_number=#{unitNumber}
-            </if>
         </where>
     </sql>
 
@@ -220,7 +216,6 @@
                     <if test="item != null and item.fieldName == 'add_time'.toString()">add_time</if>
                     <if test="item != null and item.fieldName == 'upd_time'.toString()">upd_time</if>
                     <if test="item != null and item.fieldName == 'company_name'.toString()">company_name</if>
-                    <if test="item != null and item.fieldName == 'unit_number'.toString()">unit_number</if>
                     <if test="item != null and item.order.key == 'ASC'.toString()">ASC</if>
                     <if test="item != null and item.order.key == 'asc'.toString()">asc</if>
                     <if test="item != null and item.order.key == 'DESC'.toString()">DESC</if>

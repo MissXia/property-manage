@@ -44,6 +44,18 @@ public class FeeRecordQuery extends BaseQuery {
         return this;
     }
 
+    private String unitNumber;
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public FeeRecordQuery setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
+        this.params.put("unitNumber", unitNumber);
+        return this;
+    }
+
     /**
      * 收费项目ID
      **/
@@ -310,6 +322,11 @@ public class FeeRecordQuery extends BaseQuery {
         return this;
     }
 
+    public FeeRecordQuery orderbyUnitNumber(boolean isAsc) {
+        orderFields.add(new OrderField("unit_number", isAsc ? SortDirection.ASC : SortDirection.DESC));
+        return this;
+    }
+
     /**
      * 设置排序按属性：收费项目ID
      *
@@ -415,6 +432,7 @@ public class FeeRecordQuery extends BaseQuery {
         super.getFieldSet();
         fieldMap.put("id", "id");
         fieldMap.put("company_id", "companyId");
+        fieldMap.put("unit_number", "unitNumber");
         fieldMap.put("item_id", "itemId");
         fieldMap.put("the_month", "theMonth");
         fieldMap.put("plan_pay_fee", "planPayFee");

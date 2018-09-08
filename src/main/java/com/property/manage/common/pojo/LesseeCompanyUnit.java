@@ -8,7 +8,7 @@ import java.util.Date;
  * @author 管辉俊
  * @date 2018-08-20
  */
-public class LesseeCompany extends BasePojo {
+public class LesseeCompanyUnit extends BasePojo {
 
     /**
      * 序列化ID
@@ -21,9 +21,14 @@ public class LesseeCompany extends BasePojo {
     private Long id;
 
     /**
-     * 企业名称
+     * 企业ID
      */
-    private String companyName;
+    private Long companyId;
+
+    /**
+     * 单元编号
+     */
+    private String unitNumber;
 
     /**
      * 创建时间
@@ -35,60 +40,43 @@ public class LesseeCompany extends BasePojo {
      */
     private Date updTime;
 
-    /**
-     * @return id 自增主键
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id 自增主键
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @return companyName 企业名称
-     */
-    public String getCompanyName() {
-        return companyName;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    /**
-     * @param companyName 企业名称
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
-    /**
-     * @return addTime 创建时间
-     */
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
+    }
+
     public Date getAddTime() {
         return addTime;
     }
 
-    /**
-     * @param addTime 创建时间
-     */
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
     }
 
-    /**
-     * @return updTime 修改时间
-     */
     public Date getUpdTime() {
         return updTime;
     }
 
-    /**
-     * @param updTime 修改时间
-     */
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
-
 }

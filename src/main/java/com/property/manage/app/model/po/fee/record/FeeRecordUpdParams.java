@@ -18,6 +18,11 @@ public class FeeRecordUpdParams extends BaseParams {
     private Long companyId;
 
     /**
+     * 单元编号
+     */
+    private String unitNumber;
+
+    /**
      * 收费项目ID
      */
     private Long itemId;
@@ -46,6 +51,14 @@ public class FeeRecordUpdParams extends BaseParams {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 
     public Long getItemId() {

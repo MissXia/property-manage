@@ -10,8 +10,6 @@ public class FeeRecordView extends FeeRecord {
 
     private String companyName;
 
-    private String unitNumber;
-
     public String getItemName() {
         return itemName;
     }
@@ -28,11 +26,4 @@ public class FeeRecordView extends FeeRecord {
         this.companyName = companyName;
     }
 
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
-    }
 }
