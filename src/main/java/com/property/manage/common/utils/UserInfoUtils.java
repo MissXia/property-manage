@@ -38,7 +38,7 @@ public class UserInfoUtils {
         info.setNickName(nickName);
         // 手机号码
         info.setPhoneNumber(phoneNumber);
-        // 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+        // 用户类型：0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
         info.setUserType(userType);
         // 用户头像
         info.setAvatarUrl(avatarUrl);

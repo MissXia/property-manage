@@ -27,7 +27,6 @@ import com.property.manage.common.query.FeeRecordViewQuery;
 import com.property.manage.common.service.FeeItemService;
 import com.property.manage.common.service.FeeRecordService;
 import com.property.manage.common.service.LesseeCompanyService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,8 +100,8 @@ public class FeeRecordProcessService {
         query.setTicketTimeStart(params.getTicketTimeFrom());
         // 开票结束时间
         query.setTicketTimeEnd(params.getTicketTimeTo());
-        // 按创建时间排序
-        query.orderbyAddTime(true);
+        // 所属月份升序
+        query.orderbyTheMonth(true);
         // 页码
         query.setPage(params.getPage());
         // 显示条数
@@ -141,8 +140,8 @@ public class FeeRecordProcessService {
         query.setTicketTimeStart(params.getTicketTimeFrom());
         // 开票结束时间
         query.setTicketTimeEnd(params.getTicketTimeTo());
-        // 按创建时间排序
-        query.orderbyAddTime(true);
+        // 所属月份升序
+        query.orderbyTheMonth(true);
         // 页码
         query.setPage(params.getPage());
         // 显示条数
@@ -182,7 +181,7 @@ public class FeeRecordProcessService {
      * @throws ParameterException
      */
     public void feeReocrdAdd(UserInfo userInfo, FeeRecordAddParams params) throws ParameterException {
-        // 如果权限小于普通员工
+        // 如果权限小于维护员工
         if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
@@ -210,13 +209,6 @@ public class FeeRecordProcessService {
         if (null == item) {
             // 中断流程
             throw new ParameterException("收费项目不存在!");
-        }
-        // 按用户,项目,月份查找记录
-        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getUnitNumber(), params.getItemId(), params.getTheMonth());
-        // 异常处理
-        if (CollectionUtils.isNotEmpty(records)) {
-            // 中断流程
-            throw new ParameterException("租户单元编号[" + params.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
         }
         // 实例化对象
         FeeRecord record = new FeeRecord();
@@ -251,7 +243,7 @@ public class FeeRecordProcessService {
      * @throws ParameterException
      */
     public void feeRecordUpd(UserInfo userInfo, FeeRecordUpdParams params) throws ParameterException {
-        // 如果权限小于普通员工
+        // 如果权限小于维护员工
         if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
@@ -296,19 +288,6 @@ public class FeeRecordProcessService {
         if (null == item) {
             // 中断流程
             throw new ParameterException("收费项目不存在!");
-        }
-        // 按用户,项目,月份查找记录
-        List<FeeRecord> records = findFeeRecordList(params.getCompanyId(), params.getUnitNumber(), params.getItemId(), params.getTheMonth());
-        // 异常处理
-        if (CollectionUtils.isNotEmpty(records)) {
-            // 循环处理
-            for (FeeRecord record : records) {
-                // 如果不是同一条数据
-                if (!record.getId().equals(feeRecord.getId())) {
-                    // 中断流程
-                    throw new ParameterException("租户单元编号[" + params.getUnitNumber() + "]的收费项目[" + item.getItemName() + "]在月份[" + params.getTheMonth() + "]已经存在记录!");
-                }
-            }
         }
         // 企业ID
         feeRecord.setCompanyId(params.getCompanyId());
@@ -436,11 +415,6 @@ public class FeeRecordProcessService {
         if (null == feeRecord) {
             // 中断流程
             throw new ParameterException("收费记录不存在");
-        }
-        // 如果未缴费
-        if (!feeRecord.getPayStatus().equals(PayStatus.PAY.getKey())) {
-            // 中断流程
-            throw new ParameterException("收费记录还未缴费不能开票!");
         }
         // 如果已经开票
         if (feeRecord.getTicketStatus().equals(TicketStatus.TICKET.getKey())) {

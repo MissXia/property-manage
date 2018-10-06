@@ -74,7 +74,7 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
-     * 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * 用户类型：0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
      **/
     private Integer userType;
 
@@ -327,7 +327,7 @@ public class UserInfoQuery extends BaseQuery {
     }
 
     /**
-     * 设置排序按属性：用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * 设置排序按属性：用户类型：0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
      *
      * @param isAsc 是否升序，否则为降序
      */

@@ -49,7 +49,7 @@ public class UserInfo extends BasePojo {
     private String password;
 
     /**
-     * 用户类型：-1、认证失败 0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * 用户类型：-1、认证失败 0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
      */
     private Integer userType;
 
@@ -170,14 +170,14 @@ public class UserInfo extends BasePojo {
     }
 
     /**
-     * @return userType 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * @return userType 用户类型：0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
      */
     public Integer getUserType() {
         return userType;
     }
 
     /**
-     * @param userType 用户类型：0、未知 1、普通用户 7、普通员工 8、管理员 9、超级管理员
+     * @param userType 用户类型：0、未知 1、普通用户 6、普通员工 7、维护员工 8、管理员 9、超级管理员
      */
     public void setUserType(Integer userType) {
         this.userType = userType;

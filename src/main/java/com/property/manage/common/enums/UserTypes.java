@@ -9,7 +9,9 @@ public enum UserTypes {
 
     NORMAL(1, "普通用户"),
 
-    OPEARTOR(7, "普通员工"),
+    MEMBER(6, "普通员工"),
+
+    OPEARTOR(7, "维护员工"),
 
     ADMIN(8, "管理员"),
 

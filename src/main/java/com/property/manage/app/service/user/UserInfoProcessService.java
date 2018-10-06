@@ -210,7 +210,7 @@ public class UserInfoProcessService {
      * @throws ParameterException
      */
     public void companyId(UserInfo userInfo, UserCompanyParams params) throws ParameterException {
-        // 如果权限小于普通员工
+        // 如果权限小于维护员工
         if (userInfo.getUserType() < UserTypes.OPEARTOR.getKey()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
@@ -289,7 +289,7 @@ public class UserInfoProcessService {
      * @throws ParameterException
      */
     public void verifyUserType(UserInfo userInfo, UserVerifyTypeParams params) throws ParameterException {
-        // 如果权限小于普通员工
+        // 如果权限小于维护员工
         if (userInfo.getUserType() <= params.getUserType()) {
             // 中断流程
             throw new ParameterException("您无权进行此操作!");
