@@ -79,6 +79,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public Integer deleteByCompany(Long companyId) {
+        try {
+            return userInfoDao.deleteByCompany(companyId);
+        } catch (SQLException e) {
+            logger.error("dao deleteByCompany error. :" + e.getMessage(), e);
+        }
+        return -1;
+    }
+
+    @Override
     public Integer updateUserInfoByKey(UserInfo record) {
         try {
             return userInfoDao.updateUserInfoByKey(record);

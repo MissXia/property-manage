@@ -7,6 +7,7 @@ import com.property.manage.common.pojo.UserInfoView;
 import com.property.manage.common.query.UserInfoQuery;
 import com.property.manage.common.query.UserInfoViewQuery;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -49,6 +50,14 @@ public interface UserInfoService {
      * @return
      */
     Integer deleteByKey(Long id);
+
+    /**
+     * 根据主键删除
+     *
+     * @return
+     * @throws SQLException
+     */
+    Integer deleteByCompany(Long companyId);
 
     /**
      * 根据主键更新

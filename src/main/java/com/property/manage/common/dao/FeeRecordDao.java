@@ -17,7 +17,6 @@ import java.util.Map;
 
 /**
  * @author 管辉俊
- * @date 2018-06-10
  */
 
 @Repository
@@ -68,6 +67,16 @@ public class FeeRecordDao {
      */
     public Integer deleteByKey(Long id) throws SQLException {
         return feeRecordMapper.deleteByKey(id);
+    }
+
+    /**
+     * 根据主键删除
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Integer deleteByCompany(Long companyId) throws SQLException {
+        return feeRecordMapper.deleteByCompany(companyId);
     }
 
     /**

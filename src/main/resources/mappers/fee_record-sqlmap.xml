@@ -247,7 +247,11 @@
         <include refid="table_name"/>
         WHERE id=#{id}
     </delete>
-
+    <delete id="deleteByCompany" parameterType="hashMap">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE company_id = #{companyId}
+    </delete>
 
     <!-- 根据主键更新 -->
     <update id="updateFeeRecordByKey" parameterType="com.property.manage.common.pojo.FeeRecord">

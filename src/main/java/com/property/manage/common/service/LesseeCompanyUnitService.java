@@ -6,6 +6,7 @@ import com.property.manage.common.pojo.LesseeCompanyUnitView;
 import com.property.manage.common.query.LesseeCompanyUnitQuery;
 import com.property.manage.common.query.LesseeCompanyUnitViewQuery;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -32,6 +33,14 @@ public interface LesseeCompanyUnitService {
      * @return
      */
     Integer deleteByKey(Long id);
+
+    /**
+     * 根据主键删除
+     *
+     * @return
+     * @throws SQLException
+     */
+    Integer deleteByCompany(Long companyId);
 
     /**
      * 根据主键更新

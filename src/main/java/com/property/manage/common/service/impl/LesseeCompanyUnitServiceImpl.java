@@ -59,6 +59,16 @@ public class LesseeCompanyUnitServiceImpl implements LesseeCompanyUnitService {
     }
 
     @Override
+    public Integer deleteByCompany(Long companyId) {
+        try {
+            return lesseeCompanyUnitDao.deleteByCompany(companyId);
+        } catch (SQLException e) {
+            logger.error("dao deleteByCompany error. :" + e.getMessage(), e);
+        }
+        return -1;
+    }
+
+    @Override
     public Integer updateLesseeCompanyUnitByKey(LesseeCompanyUnit record) {
         try {
             return lesseeCompanyUnitDao.updateLesseeCompanyUnitByKey(record);

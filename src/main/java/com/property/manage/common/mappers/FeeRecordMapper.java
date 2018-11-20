@@ -44,6 +44,14 @@ public interface FeeRecordMapper {
     Integer deleteByKey(@Param("id") Long id) throws SQLException;
 
     /**
+     * 根据主键删除
+     *
+     * @return
+     * @throws SQLException
+     */
+    Integer deleteByCompany(@Param("companyId") Long companyId) throws SQLException;
+
+    /**
      * 根据主键更新
      *
      * @return

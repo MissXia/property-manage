@@ -4,19 +4,19 @@ import com.property.manage.app.model.po.lessee.company.LesseeCompanyAddParams;
 import com.property.manage.app.model.po.lessee.company.LesseeCompanyDelParams;
 import com.property.manage.app.model.po.lessee.company.LesseeCompanyListParams;
 import com.property.manage.app.model.po.lessee.company.LesseeCompanyUpdParams;
-import com.property.manage.app.service.lessee.company.unit.LesseeCompanyUnitProcessService;
 import com.property.manage.base.model.exception.ParameterException;
 import com.property.manage.base.model.model.Result;
 import com.property.manage.base.model.utils.CheckUtils;
 import com.property.manage.common.enums.UserTypes;
 import com.property.manage.common.pojo.LesseeCompany;
-import com.property.manage.common.pojo.LesseeCompanyUnit;
 import com.property.manage.common.pojo.LesseeCompanyView;
 import com.property.manage.common.pojo.UserInfo;
 import com.property.manage.common.query.LesseeCompanyQuery;
 import com.property.manage.common.query.LesseeCompanyViewQuery;
+import com.property.manage.common.service.FeeRecordService;
 import com.property.manage.common.service.LesseeCompanyService;
 import com.property.manage.common.service.LesseeCompanyUnitService;
+import com.property.manage.common.service.UserInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,10 @@ public class LesseeCompanyProcessService {
     private LesseeCompanyUnitService lesseeCompanyUnitService;
 
     @Autowired
-    private LesseeCompanyUnitProcessService lesseeCompanyUnitProcessService;
+    private FeeRecordService feeRecordService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     /**
      * 查询列表
@@ -194,19 +197,13 @@ public class LesseeCompanyProcessService {
             // 中断流程
             throw new ParameterException("租户企业不存在");
         }
+        // 删除企业关联记录
+        feeRecordService.deleteByCompany(params.getCompanyId());
+        // 查找企业下的单元编号
+        lesseeCompanyUnitService.deleteByCompany(params.getCompanyId());
+        // 删除企业下所有关联人
+        userInfoService.deleteByCompany(params.getCompanyId());
         // 删除企业
         lesseeCompanyService.deleteByKey(params.getCompanyId());
-        // 查找企业下的单元编号
-        List<LesseeCompanyUnit> units = lesseeCompanyUnitProcessService.findLesseeCompanyUnitList(params.getCompanyId(), null);
-        // 异常判断
-        if (CollectionUtils.isEmpty(units)) {
-            // 中断流程
-            return;
-        }
-        // 循环处理
-        for (LesseeCompanyUnit unit : units) {
-            // 删除单元编号
-            lesseeCompanyUnitService.deleteByKey(unit.getId());
-        }
     }
 }

@@ -24,6 +24,7 @@ import java.util.List;
 public class FeeRecordServiceImpl implements FeeRecordService {
 
     private static Logger logger = LoggerFactory.getLogger(FeeRecordServiceImpl.class);
+
     @Resource
     private FeeRecordDao feeRecordDao;
 
@@ -68,6 +69,16 @@ public class FeeRecordServiceImpl implements FeeRecordService {
     }
 
     @Override
+    public Integer deleteByCompany(Long companyId) {
+        try {
+            return feeRecordDao.deleteByCompany(companyId);
+        } catch (SQLException e) {
+            logger.error("dao deleteByCompany error. :" + e.getMessage(), e);
+        }
+        return -1;
+    }
+
+    @Override
     public Integer updateFeeRecordByKey(FeeRecord record) {
         try {
             return feeRecordDao.updateFeeRecordByKey(record);
@@ -76,7 +87,6 @@ public class FeeRecordServiceImpl implements FeeRecordService {
         }
         return -1;
     }
-
 
     @Override
     public Result<FeeRecord> getFeeRecordListWithPage(FeeRecordQuery query) {

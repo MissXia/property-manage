@@ -61,6 +61,16 @@ public class LesseeCompanyUnitDao {
     }
 
     /**
+     * 根据主键删除
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Integer deleteByCompany(Long companyId) throws SQLException {
+        return lesseeCompanyUnitMapper.deleteByCompany(companyId);
+    }
+
+    /**
      * 根据主键更新
      *
      * @return

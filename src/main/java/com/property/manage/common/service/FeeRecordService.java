@@ -40,6 +40,13 @@ public interface FeeRecordService {
     Integer deleteByKey(Long id);
 
     /**
+     * 根据主键删除
+     *
+     * @return
+     */
+    Integer deleteByCompany(Long companyId);
+
+    /**
      * 根据主键更新
      *
      * @return
