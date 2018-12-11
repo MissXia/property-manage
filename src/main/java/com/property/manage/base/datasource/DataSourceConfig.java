@@ -26,6 +26,17 @@ public class DataSourceConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(username);// 用户名
         dataSource.setPassword(password);// 密码
+        dataSource.setMaxActive(50);
+        dataSource.setInitialSize(5);
+        dataSource.setMaxWait(100);
+        dataSource.setMinIdle(1);
+        dataSource.setTimeBetweenEvictionRunsMillis(3000);
+        dataSource.setMinEvictableIdleTimeMillis(300000);
+        dataSource.setValidationQuery("SELECT 'x'");
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTestOnBorrow(false);
+        dataSource.setTestOnReturn(false);
+        dataSource.setPoolPreparedStatements(false);
         dataSource.setConnectionInitSqls(Lists.newArrayList("set names utf8mb4;"));
         return dataSource;
     }
